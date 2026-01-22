@@ -1,0 +1,35 @@
+﻿{
+    "lastUpdated":  "2026-01-22 11:25:54",
+    "skills":  [
+                   {
+                       "path":  ".agent/skills/project-refactor",
+                       "description":  "项目重构工具，扫描代码库生成文档流，收纳测试脚本。",
+                       "name":  "project-refactor",
+                       "id":  "project-refactor"
+                   },
+                   {
+                       "path":  ".agent/skills/project-sop",
+                       "description":  "项目全生命周期管理工具，实现 AI 主动推动的 SOP 开发流程。",
+                       "name":  "project-sop",
+                       "id":  "project-sop"
+                   }
+               ],
+    "rules":  [
+                  {
+                      "path":  ".gemini/rules/dev-flow.md",
+                      "description":  {
+
+                                      },
+                      "name":  "🛠️ DEV FLOW (开发流规则)",
+                      "id":  "dev-flow"
+                  },
+                  {
+                      "path":  ".gemini/rules/global-core.md",
+                      "description":  {
+
+                                      },
+                      "name":  "🏛️ GLOBAL CORE PHILOSOPHY",
+                      "id":  "global-core"
+                  }
+              ]
+}

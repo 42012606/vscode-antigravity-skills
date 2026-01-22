@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Build output
+out/
+dist/
+*.vsix
+
+# IDE
+.vscode-test/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 个人文档（不上传到 GitHub）
+docs/
+
+# 临时文件
+*.log
+.env

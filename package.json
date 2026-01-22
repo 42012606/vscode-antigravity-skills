@@ -1,0 +1,116 @@
+{
+  "name": "vscode-antigravity-skills",
+  "displayName": "Skills Manager for Antigravity",
+  "description": "📦 Manage and deploy AI Skills & Rules for Google Antigravity IDE | 技能库管理器",
+  "version": "0.1.0",
+  "publisher": "42012606",
+  "icon": "resources/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/42012606/vscode-antigravity-skills.git"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other",
+    "Machine Learning"
+  ],
+  "keywords": [
+    "antigravity",
+    "skills",
+    "rules",
+    "ai",
+    "gemini",
+    "cursor",
+    "agent"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "antiSkills.openLibrary",
+        "title": "打开技能库",
+        "category": "Skills Manager"
+      },
+      {
+        "command": "antiSkills.deploySkill",
+        "title": "部署 Skill",
+        "category": "Skills Manager"
+      },
+      {
+        "command": "antiSkills.deployRule",
+        "title": "部署 Rule",
+        "category": "Skills Manager"
+      },
+      {
+        "command": "antiSkills.refresh",
+        "title": "刷新",
+        "category": "Skills Manager"
+      },
+      {
+        "command": "antiSkills.setLibraryPath",
+        "title": "设置库路径",
+        "category": "Skills Manager"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "antiSkills",
+          "title": "Skills Manager",
+          "icon": "resources/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "antiSkills": [
+        {
+          "id": "antiSkills.treeView",
+          "name": "Skills & Rules"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Antigravity Skills Manager",
+      "properties": {
+        "antiSkills.libraryPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to your Skills/Rules library"
+        },
+        "antiSkills.showStatusBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show Skills count in status bar"
+        }
+      }
+    },
+    "keybindings": [
+      {
+        "command": "antiSkills.openLibrary",
+        "key": "ctrl+shift+k",
+        "mac": "cmd+shift+k"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "eslint": "^8.54.0",
+    "typescript": "^5.3.2",
+    "@vscode/vsce": "^2.22.0"
+  }
+}

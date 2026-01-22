@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛠️ Skill Manager</title>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --border: #30363d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --accent: #58a6ff;
+            --accent-hover: #79c0ff;
+            --success: #3fb950;
+            --warning: #d29922;
+            --gradient-start: #667eea;
+            --gradient-end: #764ba2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .meta-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .target-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .target-section label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .target-section input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .target-section input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-header h2 {
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .select-all {
+            font-size: 0.85rem;
+            color: var(--accent);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .select-all:hover {
+            color: var(--accent-hover);
+        }
+
+        .item-list {
+            padding: 0.5rem 0;
+        }
+
+        .item {
+            display: flex;
+            align-items: flex-start;
+            padding: 1rem 1.5rem;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+
+        .item:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 1rem;
+            margin-top: 0.2rem;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .item-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .item-path {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            opacity: 0.7;
+            font-family: 'Consolas', monospace;
+            margin-top: 0.25rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .output-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .output-header {
+            padding: 1rem 1.5rem;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+        }
+
+        .output-content {
+            padding: 1.5rem;
+        }
+
+        .output-content pre {
+            background: #000;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--success);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .loading {
+            animation: pulse 1.5s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛠️ Skill Manager</h1>
+            <p>可视化管理你的 Skills 和 Rules 库</p>
+            <div class="meta-info">
+                <span id="skillCount">📦 Skills: -</span>
+                <span id="ruleCount">📜 Rules: -</span>
+                <span id="lastUpdate">🕐 更新: -</span>
+            </div>
+        </header>
+
+        <div class="target-section">
+            <label for="targetPath">📁 目标项目路径</label>
+            <input type="text" id="targetPath" placeholder="例如: C:\Projects\MyNewApp">
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>📦 Skills</h2>
+                <span class="select-all" onclick="toggleAll('skills')">全选/取消</span>
+            </div>
+            <div class="item-list" id="skillsList">
+                <div class="empty-state loading">正在加载...</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>📜 Rules</h2>
+                <span class="select-all" onclick="toggleAll('rules')">全选/取消</span>
+            </div>
+            <div class="item-list" id="rulesList">
+                <div class="empty-state loading">正在加载...</div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-primary" onclick="generateCommand()">
+                🚀 生成部署命令
+            </button>
+            <button class="btn btn-secondary" onclick="copyCommand()">
+                📋 复制命令
+            </button>
+        </div>
+
+        <div class="output-section">
+            <div class="output-header">💻 PowerShell 命令</div>
+            <div class="output-content">
+                <pre id="commandOutput">选择要部署的 Skills/Rules，然后点击「生成部署命令」</pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">✅ 已复制到剪贴板！</div>
+
+    <script>
+        let manifest = { skills: [], rules: [] };
+
+        // 加载 manifest.json
+        async function loadManifest() {
+            try {
+                const response = await fetch('./manifest.json');
+                manifest = await response.json();
+                renderSkills();
+                renderRules();
+                updateMeta();
+            } catch (e) {
+                document.getElementById('skillsList').innerHTML = 
+                    '<div class="empty-state">⚠️ 请先运行 scan.ps1 生成 manifest.json</div>';
+                document.getElementById('rulesList').innerHTML = 
+                    '<div class="empty-state">⚠️ 请先运行 scan.ps1 生成 manifest.json</div>';
+            }
+        }
+
+        function renderSkills() {
+            const container = document.getElementById('skillsList');
+            if (!manifest.skills || manifest.skills.length === 0) {
+                container.innerHTML = '<div class="empty-state">暂无 Skills</div>';
+                return;
+            }
+            container.innerHTML = manifest.skills.map(s => `
+                <label class="item">
+                    <input type="checkbox" data-type="skill" data-id="${s.id}" data-path="${s.path}">
+                    <div class="item-info">
+                        <div class="item-name">${s.name}</div>
+                        <div class="item-desc">${s.description || '无描述'}</div>
+                        <div class="item-path">${s.path}</div>
+                    </div>
+                </label>
+            `).join('');
+        }
+
+        function renderRules() {
+            const container = document.getElementById('rulesList');
+            if (!manifest.rules || manifest.rules.length === 0) {
+                container.innerHTML = '<div class="empty-state">暂无 Rules</div>';
+                return;
+            }
+            container.innerHTML = manifest.rules.map(r => `
+                <label class="item">
+                    <input type="checkbox" data-type="rule" data-id="${r.id}" data-path="${r.path}">
+                    <div class="item-info">
+                        <div class="item-name">${r.name}</div>
+                        <div class="item-desc">${r.description || '无描述'}</div>
+                        <div class="item-path">${r.path}</div>
+                    </div>
+                </label>
+            `).join('');
+        }
+
+        function updateMeta() {
+            document.getElementById('skillCount').textContent = `📦 Skills: ${manifest.skills?.length || 0}`;
+            document.getElementById('ruleCount').textContent = `📜 Rules: ${manifest.rules?.length || 0}`;
+            document.getElementById('lastUpdate').textContent = `🕐 更新: ${manifest.lastUpdated || '-'}`;
+        }
+
+        function toggleAll(type) {
+            const selector = type === 'skills' ? '#skillsList input' : '#rulesList input';
+            const checkboxes = document.querySelectorAll(selector);
+            const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+            checkboxes.forEach(cb => cb.checked = !allChecked);
+        }
+
+        function generateCommand() {
+            const targetPath = document.getElementById('targetPath').value.trim();
+            if (!targetPath) {
+                showToast('⚠️ 请输入目标项目路径！');
+                return;
+            }
+
+            const selectedSkills = Array.from(document.querySelectorAll('input[data-type="skill"]:checked'))
+                .map(cb => ({ id: cb.dataset.id, path: cb.dataset.path }));
+            const selectedRules = Array.from(document.querySelectorAll('input[data-type="rule"]:checked'))
+                .map(cb => ({ id: cb.dataset.id, path: cb.dataset.path }));
+
+            if (selectedSkills.length === 0 && selectedRules.length === 0) {
+                showToast('⚠️ 请至少选择一个 Skill 或 Rule！');
+                return;
+            }
+
+            // 获取当前页面所在目录作为源目录
+            const currentPath = window.location.pathname;
+            const sourcePath = currentPath.substring(0, currentPath.lastIndexOf('/')).replace(/^\/([A-Z]):/, '$1:');
+            const mySkillsRoot = sourcePath.replace('/manager', '');
+
+            let commands = ['# Skill Manager 部署命令', ''];
+
+            if (selectedSkills.length > 0) {
+                commands.push('# === Skills ===');
+                commands.push(`$source = "${mySkillsRoot}"`);
+                commands.push(`$target = "${targetPath}"`);
+                commands.push('New-Item -ItemType Directory -Force -Path "$target\\.agent\\skills" | Out-Null');
+                commands.push('');
+                selectedSkills.forEach(s => {
+                    commands.push(`# ${s.id}`);
+                    commands.push(`cmd /c mklink /J "$target\\.agent\\skills\\${s.id}" "$source\\${s.path.replace(/\//g, '\\\\')}"`);
+                });
+                commands.push('');
+            }
+
+            if (selectedRules.length > 0) {
+                commands.push('# === Rules ===');
+                commands.push(`$source = "${mySkillsRoot}"`);
+                commands.push(`$target = "${targetPath}"`);
+                commands.push('New-Item -ItemType Directory -Force -Path "$target\\.gemini" | Out-Null');
+                commands.push('');
+                selectedRules.forEach(r => {
+                    const fileName = r.path.split('/').pop();
+                    commands.push(`# ${r.id}`);
+                    commands.push(`Copy-Item "$source\\${r.path.replace(/\//g, '\\\\')}" "$target\\.gemini\\${fileName}"`);
+                });
+                commands.push('');
+            }
+
+            commands.push('Write-Host "✅ 部署完成！" -ForegroundColor Green');
+
+            document.getElementById('commandOutput').textContent = commands.join('\n');
+        }
+
+        function copyCommand() {
+            const command = document.getElementById('commandOutput').textContent;
+            navigator.clipboard.writeText(command).then(() => {
+                showToast('✅ 已复制到剪贴板！');
+            }).catch(() => {
+                showToast('❌ 复制失败，请手动复制');
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        // 初始化
+        loadManifest();
+    </script>
+</body>
+</html>
