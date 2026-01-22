@@ -82,7 +82,7 @@ If this project helps you, please consider:
 - ⭐ [GitHub Star](https://github.com/42012606/vscode-antigravity-skills) - Your support is my biggest motivation!
 - 💬 [Report Issues](https://github.com/42012606/vscode-antigravity-skills/issues)
 
-<a href="docs/SPONSOR.md" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+[![](https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png)](./docs/SPONSOR.md)
 
 ---
 
