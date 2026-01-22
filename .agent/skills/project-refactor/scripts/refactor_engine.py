@@ -10,6 +10,10 @@ META_DIR = os.path.join("docs", "meta")
 TESTS_DIR = "tests"
 LOG_FILE = os.path.join(META_DIR, ".refactor_log")
 
+# 共享模板目录 (相对于脚本位置)
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+TEMPLATES_DIR = os.path.join(SCRIPT_DIR, "..", "..", "shared-templates")
+
 # 测试脚本匹配规则
 TEST_PATTERNS = {
     "test_": TESTS_DIR,           # test_*.py → tests/
@@ -21,47 +25,27 @@ TEST_PATTERNS = {
 # 排除目录
 EXCLUDE_DIRS = {".git", ".idea", "__pycache__", "node_modules", "venv", ".gemini", ".agent", "tests"}
 
-# 5+1 文档模板
-DOCS_TEMPLATE = {
-    "00_CONTEXT.md": """# 📋 Project Context
-
-> **AI 快速索引页**: 阅读代码前请先读取此文件。
-
-## Tech Stack
-- **Language**: [待填充]
-- **Framework**: [待填充]
-- **Database**: [待填充]
-
-## Architecture Snapshot
-> 核心数据流与模块职责概述。
-> [由 AI 分析代码后填充]
-
-## Dev Rules (红线)
-1. 遵守关注点分离
-2. 禁止跨层调用
-3. 新增文件前确认模块归属
-""",
-    "01_TASKS.md": """# 📅 Tasks
-
-## Current Focus
-> 当前正在进行的任务。
-
-## Completed
-> 已完成的任务归档。
-""",
-    "02_ARCHITECTURE.md": """# 🏗️ Architecture
-
-> 运行 `重构` 或 `op init` 自动更新文件树。
-""",
-    "03_CHANGELOG.md": """# 📝 Changelog
-
-## History
-""",
-    "04_MEMO.md": """# 💡 Memo
-
-> 临时草稿，定期清空。
-""",
+# 模板文件映射 (目标文件名 -> 模板文件名)
+TEMPLATE_FILES = {
+    "AI_MAP.md": "AI_MAP.md",
+    "DECISION_LOG.md": "DECISION_LOG.md",
+    "TASKS.md": "TASKS.md",
+    "MEMO.md": "MEMO.md",
 }
+
+# README 单独处理 (放在项目根目录)
+README_TEMPLATE = "README.md"
+
+
+def load_template(template_name):
+    """从共享模板目录加载模板内容"""
+    template_path = os.path.join(TEMPLATES_DIR, template_name)
+    if os.path.exists(template_path):
+        with open(template_path, "r", encoding="utf-8") as f:
+            return f.read()
+    else:
+        log(f"⚠️ 模板文件不存在: {template_path}")
+        return f"# {template_name}\n\n> 模板文件缺失，请检查 shared-templates 目录。\n"
 
 def get_timestamp():
     return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -159,7 +143,7 @@ def run_scan():
 
 # === 模式 2: 生成文档 (docs) ===
 def run_docs():
-    """生成 5+1 标准文档"""
+    """生成标准文档结构"""
     log("📄 [Docs] 开始生成文档结构...")
     
     # 1. 创建目录
@@ -167,24 +151,37 @@ def run_docs():
         os.makedirs(META_DIR)
         log(f"✅ 创建目录: {META_DIR}")
     
-    # 2. 生成文档 (不覆盖已存在的)
+    # 2. 生成 docs/meta/ 下的文档 (不覆盖已存在的)
     created = []
     skipped = []
     
-    for name, content in DOCS_TEMPLATE.items():
-        path = os.path.join(META_DIR, name)
+    for target_name, template_name in TEMPLATE_FILES.items():
+        path = os.path.join(META_DIR, target_name)
         if not os.path.exists(path):
+            content = load_template(template_name)
             with open(path, "w", encoding="utf-8") as f:
                 f.write(content)
-            created.append(name)
+            created.append(target_name)
         else:
-            skipped.append(name)
+            skipped.append(target_name)
     
-    # 3. 生成架构地图
-    arch_path = os.path.join(META_DIR, "02_ARCHITECTURE.md")
+    # 3. 生成项目根目录 README (不覆盖)
+    readme_path = "README.md"
+    if not os.path.exists(readme_path):
+        content = load_template(README_TEMPLATE)
+        with open(readme_path, "w", encoding="utf-8") as f:
+            f.write(content)
+        created.append("README.md (root)")
+    else:
+        skipped.append("README.md (root)")
+    
+    # 4. 在 AI_MAP.md 中追加文件树
+    ai_map_path = os.path.join(META_DIR, "AI_MAP.md")
     tree_output = generate_file_tree()
-    with open(arch_path, "a", encoding="utf-8") as f:
-        f.write(f"\n\n### Scan {datetime.date.today()}\n```text\n{tree_output}\n```\n")
+    if os.path.exists(ai_map_path):
+        with open(ai_map_path, "a", encoding="utf-8") as f:
+            f.write(f"\n\n## 5. 📂 File Tree (Auto-Generated)\n\n```text\n{tree_output}\n```\n")
+        log("✅ 已追加文件树到 AI_MAP.md")
     
     log(f"✅ 创建文件: {created}")
     log(f"⏩ 跳过文件: {skipped}")

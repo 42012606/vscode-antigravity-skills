@@ -4,57 +4,34 @@ import datetime
 import subprocess
 import re
 
-# === 配置：5+1 标准架构 ===
+# === 配置：标准架构 ===
 META_DIR = os.path.join("docs", "meta")
-FILES_TEMPLATE = {
-    "00_CONTEXT.md": """# 📋 Project Context
 
-> **AI 快速索引页**: 阅读代码前请先读取此文件。
+# 共享模板目录 (相对于脚本位置)
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+TEMPLATES_DIR = os.path.join(SCRIPT_DIR, "..", "..", "shared-templates")
 
-## Tech Stack
-- **Language**: [待填充]
-- **Framework**: [待填充]
-- **Database**: [待填充]
-
-## Architecture Snapshot
-> 核心数据流与模块职责概述。
-
-## Dev Rules (红线)
-1. 遵守关注点分离
-2. 禁止跨层调用
-3. 新增文件前确认模块归属
-""",
-    "01_TASKS.md": """# 📅 Tasks
-
-## Current Focus
-> 当前正在进行的任务。
-
-## Completed
-> 已完成的任务归档。
-""",
-    "02_ARCHITECTURE.md": """# 🏗️ Architecture
-
-> 运行 `op init` 自动更新文件树。
-""",
-    "03_CHANGELOG.md": """# 📝 Changelog
-
-## History
-""",
-    "04_MEMO.md": """# 💡 Memo
-
-> 临时草稿，定期清空。
-""",
-    "README.md": """# Project Name
-
-> 项目简介
-
-## Quick Start
-[待填充]
-
-## Docs
-详细文档位于 `docs/meta/`。
-"""
+# 模板文件映射 (目标文件名 -> 模板文件名)
+TEMPLATE_FILES = {
+    "AI_MAP.md": "AI_MAP.md",
+    "DECISION_LOG.md": "DECISION_LOG.md",
+    "TASKS.md": "TASKS.md",
+    "MEMO.md": "MEMO.md",
 }
+
+# README 单独处理 (放在项目根目录)
+README_TEMPLATE = "README.md"
+
+
+def load_template(template_name):
+    """从共享模板目录加载模板内容"""
+    template_path = os.path.join(TEMPLATES_DIR, template_name)
+    if os.path.exists(template_path):
+        with open(template_path, "r", encoding="utf-8") as f:
+            return f.read()
+    else:
+        print(f"⚠️ 模板文件不存在: {template_path}")
+        return f"# {template_name}\n\n> 模板文件缺失，请检查 shared-templates 目录。\n"
 
 # === 状态文件 ===
 STATE_FILE = os.path.join(META_DIR, ".sop_state")
@@ -95,28 +72,35 @@ def load_state():
 # --- 功能 1: 初始化 (init) ---
 def run_init():
     cwd = os.getcwd()
-    print(f"🚀 [Init] Enforcing 5+1 Standard in {cwd}...")
+    print(f"🚀 [Init] Enforcing Standard Structure in {cwd}...")
     
     # 1. 创建目录
     if not os.path.exists(META_DIR):
         os.makedirs(META_DIR)
         print(f"✅ Created {META_DIR}")
     
-    # 2. 生成标准文件 (不覆盖已存在的)
-    for name, content in FILES_TEMPLATE.items():
-        if name == "README.md":
-            path = name
-        else:
-            path = os.path.join(META_DIR, name)
-        
+    # 2. 生成 docs/meta/ 下的标准文件 (不覆盖已存在的)
+    for target_name, template_name in TEMPLATE_FILES.items():
+        path = os.path.join(META_DIR, target_name)
         if not os.path.exists(path):
+            content = load_template(template_name)
             with open(path, "w", encoding="utf-8") as f:
                 f.write(content)
             print(f"📄 Created {path}")
         else:
             print(f"⏩ Skipped (Exists) {path}")
     
-    # 3. 扫描并更新 Architecture Map
+    # 3. 生成项目根目录 README (不覆盖)
+    readme_path = "README.md"
+    if not os.path.exists(readme_path):
+        content = load_template(README_TEMPLATE)
+        with open(readme_path, "w", encoding="utf-8") as f:
+            f.write(content)
+        print(f"📄 Created {readme_path}")
+    else:
+        print(f"⏩ Skipped (Exists) {readme_path}")
+    
+    # 4. 扫描并更新 AI_MAP.md 文件树
     tree_output = []
     exclude_dirs = {".git", ".idea", "__pycache__", "node_modules", "venv", ".gemini", ".agent"}
     for root, dirs, files in os.walk("."):
@@ -129,11 +113,11 @@ def run_init():
             if f.endswith((".md", ".py", ".js", ".ts", ".json", ".sql", ".php", ".txt", ".html", ".css")):
                 tree_output.append(f"{subindent}{f}")
     
-    arch_path = os.path.join(META_DIR, "02_ARCHITECTURE.md")
-    if os.path.exists(arch_path):
-        with open(arch_path, "a", encoding="utf-8") as f:
-            f.write(f"\n\n### Scan {get_date()}\n```text\n" + "\n".join(tree_output) + "\n```\n")
-        print("✅ Updated Architecture Map.")
+    ai_map_path = os.path.join(META_DIR, "AI_MAP.md")
+    if os.path.exists(ai_map_path):
+        with open(ai_map_path, "a", encoding="utf-8") as f:
+            f.write(f"\n\n## 5. 📂 File Tree ({get_date()})\n\n```text\n" + "\n".join(tree_output) + "\n```\n")
+        print("✅ Updated AI_MAP.md with file tree.")
     
     save_state("IDLE")
     print("✅ Init complete. State: IDLE")
@@ -163,7 +147,7 @@ def run_start(content):
         return
     
     # 3. 写入任务令牌
-    tasks_path = os.path.join(META_DIR, "01_TASKS.md")
+    tasks_path = os.path.join(META_DIR, "TASKS.md")
     if os.path.exists(tasks_path):
         with open(tasks_path, "r", encoding="utf-8") as f:
             old_content = f.read()
@@ -186,17 +170,21 @@ def run_start(content):
     print(f"✅ Start complete. State: TASK_ACTIVE")
 
 # --- 功能 3: 记日志 (log) ---
-def run_log(content):
+def run_log(content, reason=""):
     if not content:
         print("❌ Error: 内容必填。用法: `op log 变更描述`")
         return
     
-    log_path = os.path.join(META_DIR, "03_CHANGELOG.md")
+    log_path = os.path.join(META_DIR, "DECISION_LOG.md")
     if not os.path.exists(log_path):
         print("❌ Error: 文档不存在。请先运行 `op init`。")
         return
     
-    entry = f"\n### {get_date()}\n- {content}\n"
+    # 获取当前分支名
+    branch = get_current_branch() or "main"
+    reason_part = f" (Reason: {reason})" if reason else " (Reason: [待补充])"
+    
+    entry = f"- [{get_date()}] [{branch}] : {content}{reason_part}\n"
     with open(log_path, "a", encoding="utf-8") as f:
         f.write(entry)
     print(f"✅ Logged: {content}")
@@ -218,7 +206,7 @@ def run_done(content):
     print("🚀 [Done] Completing task...")
     
     # 1. 更新 TASKS.md (标记完成)
-    tasks_path = os.path.join(META_DIR, "01_TASKS.md")
+    tasks_path = os.path.join(META_DIR, "TASKS.md")
     if os.path.exists(tasks_path):
         with open(tasks_path, "r", encoding="utf-8") as f:
             old_content = f.read()
