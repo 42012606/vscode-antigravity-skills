@@ -82,7 +82,7 @@ MySkills/
 - ⭐ [GitHub Star](https://github.com/42012606/vscode-antigravity-skills)
 - 💬 [提交反馈](https://github.com/42012606/vscode-antigravity-skills/issues)
 
-[![](https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png)](./docs/SPONSOR.md)
+[![](https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png)](docs/SPONSOR.md)
 
 ---
 
