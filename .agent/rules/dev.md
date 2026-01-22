@@ -37,3 +37,8 @@ trigger: always_on
 * **禁止乱建文件**: 新增代码文件前，必须确认其所属模块目录。若无合适目录，需先沟通是否新建模块。
 * **单一入口**: 每个模块对外暴露的接口应通过 `index.ts` / `__init__.py` 统一导出。
 * **依赖方向**: 公共模块 (`common/utils`) 不得依赖业务模块 (`modules/xxx`)。
+
+## 5. Git 提交规范 (Git Commit Convention)
+* **语言**: 所有 commit message 必须使用**简体中文**。
+* **格式**: `<type>: <描述>` (如 `feat: 新增用户登录功能`)
+* **类型**: feat(功能) | fix(修复) | docs(文档) | refactor(重构) | chore(杂项)
