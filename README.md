@@ -78,11 +78,11 @@ MySkills/
 
 ## 🤝 贡献与支持
 
-觉得好用？你的支持是我持续更新的最大动力 ❤️
-- ⭐ [GitHub Star](https://github.com/42012606/vscode-antigravity-skills)
-- 💬 [提交反馈](https://github.com/42012606/vscode-antigravity-skills/issues)
+觉得好用？给个 ⭐ 支持一下！
 
-[![](https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png)](docs/SPONSOR.md)
+[![星标](https://img.shields.io/badge/%E2%AD%90_%E6%98%9F%E6%A0%87-yellow?style=for-the-badge)](https://github.com/42012606/vscode-antigravity-skills)
+[![反馈](https://img.shields.io/badge/%F0%9F%92%AC_%E5%8F%8D%E9%A6%88-007acc?style=for-the-badge)](https://github.com/42012606/vscode-antigravity-skills/issues)
+[![赞助](https://img.shields.io/badge/%E2%98%95_%E8%B5%9E%E5%8A%A9-8a2be2?style=for-the-badge)](SPONSOR.md)
 
 ---
 

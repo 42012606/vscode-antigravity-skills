@@ -79,10 +79,10 @@ MySkills/
 ## 🤝 Support
 
 If this project helps you, please consider:
-- ⭐ [GitHub Star](https://github.com/42012606/vscode-antigravity-skills) - Your support is my biggest motivation!
-- 💬 [Report Issues](https://github.com/42012606/vscode-antigravity-skills/issues)
 
-[![](https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png)](./docs/SPONSOR.md)
+[![GitHub Star](https://img.shields.io/badge/%E2%AD%90_Star-yellow?style=for-the-badge)](https://github.com/42012606/vscode-antigravity-skills)
+[![Feedback](https://img.shields.io/badge/%F0%9F%92%AC_Feedback-007acc?style=for-the-badge)](https://github.com/42012606/vscode-antigravity-skills/issues)
+[![Sponsor](https://img.shields.io/badge/%E2%98%95_Sponsor-8a2be2?style=for-the-badge)](SPONSOR.md)
 
 ---
 
