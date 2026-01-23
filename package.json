@@ -2,7 +2,7 @@
   "name": "vscode-antigravity-skills",
   "displayName": "Skills Manager for Antigravity",
   "description": "📦 Manage and deploy AI Skills & Rules for Google Antigravity IDE | 技能库管理器",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "42012606",
   "icon": "resources/icon.png",
   "repository": {
