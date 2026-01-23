@@ -24,8 +24,8 @@ jobs:
       - name: Compile
         run: npm run compile
 
-      - name: Publish to Marketplace
-        run: npx vsce publish -p ${{ secrets.VSCE_TOKEN }}
+      - name: Package extension
+        run: npx vsce package
 
       - name: Publish to Open VSX
         run: npx ovsx publish -p ${{ secrets.OVSX_TOKEN }}

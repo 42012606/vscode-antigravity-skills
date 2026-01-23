@@ -1,0 +1,15 @@
+.agent/skills/private-credentials/**
+.agent/skills/shared-templates/**
+.vscode/**
+.git/**
+.github/**
+.gemini/**
+docs/**
+tests/**
+tsconfig.json
+src/**
+*.vsix
+package-lock.json
+*.log
+.env
+.agent/rules/dev.md
