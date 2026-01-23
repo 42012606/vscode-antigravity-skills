@@ -122,6 +122,43 @@ export function activate(context: vscode.ExtensionContext) {
     // 初始刷新
     libraryService.refresh();
     statusBarProvider.update();
+
+    // 监听文件变化实现自动刷新
+    const libPath = libraryService.getLibraryPath();
+    if (libPath) {
+        const watcher = vscode.workspace.createFileSystemWatcher(
+            new vscode.RelativePattern(libPath, '**/.agent/**')
+        );
+
+        const autoRefresh = () => {
+            libraryService.refresh();
+            treeViewProvider.refresh();
+            statusBarProvider.update();
+            if (LibraryPanel.currentPanel) {
+                LibraryPanel.createOrShow(context.extensionUri, libraryService);
+            }
+        };
+
+        watcher.onDidCreate(autoRefresh);
+        watcher.onDidChange(autoRefresh);
+        watcher.onDidDelete(autoRefresh);
+
+        context.subscriptions.push(watcher);
+    }
+
+    // 监听工作区文件变化
+    const workspaceWatcher = vscode.workspace.createFileSystemWatcher('**/.agent/**');
+    const workspaceAutoRefresh = () => {
+        treeViewProvider.refresh();
+        statusBarProvider.update();
+        if (LibraryPanel.currentPanel) {
+            LibraryPanel.createOrShow(context.extensionUri, libraryService);
+        }
+    };
+    workspaceWatcher.onDidCreate(workspaceAutoRefresh);
+    workspaceWatcher.onDidChange(workspaceAutoRefresh);
+    workspaceWatcher.onDidDelete(workspaceAutoRefresh);
+    context.subscriptions.push(workspaceWatcher);
 }
 
 export function deactivate() {

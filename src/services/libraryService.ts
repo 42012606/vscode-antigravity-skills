@@ -35,6 +35,14 @@ export class LibraryService {
         return folders?.[0]?.uri.fsPath;
     }
 
+    // 检测工作区是否与库路径相同（危险场景）
+    isWorkspaceEqualToLibrary(): boolean {
+        const workspaceRoot = this.getWorkspaceRoot();
+        const libPath = this.getLibraryPath();
+        if (!workspaceRoot || !libPath) return false;
+        return path.normalize(workspaceRoot).toLowerCase() === path.normalize(libPath).toLowerCase();
+    }
+
     refresh(): void {
         this.skills = [];
         this.rules = [];
@@ -200,11 +208,9 @@ export class LibraryService {
                             const titleMatch = content.match(/^#\s+(.+)/m);
                             const title = titleMatch ? titleMatch[1].trim() : '';
 
+                            // 只按文件名计数，避免重复
                             if (!deployed.find(r => r.id === rawId)) {
                                 deployed.push({ id: rawId, name: title || file.name, description: '已部署', path: filePath });
-                            }
-                            if (title && title !== rawId && !deployed.find(r => r.id === title)) {
-                                deployed.push({ id: title, name: title, description: '已部署（按标题匹配）', path: filePath });
                             }
                         }
                     }
@@ -265,6 +271,18 @@ export class LibraryService {
         const workspaceRoot = this.getWorkspaceRoot();
         if (!workspaceRoot) return;
 
+        // 危险场景检测：工作区 === 库路径
+        if (this.isWorkspaceEqualToLibrary()) {
+            const choice = await vscode.window.showWarningMessage(
+                `⚠️ 危险操作！当前工作区与库路径相同，删除将永久移除技能仓库源文件 "${skillId}"！此操作不可撤销！`,
+                { modal: true },
+                '确认删除源文件'
+            );
+            if (choice !== '确认删除源文件') {
+                return;
+            }
+        }
+
         const targetPath = path.join(workspaceRoot, '.agent', 'skills', skillId);
         if (fs.existsSync(targetPath)) {
             fs.rmSync(targetPath, { recursive: true, force: true });
@@ -274,6 +292,18 @@ export class LibraryService {
     async removeRule(ruleId: string): Promise<void> {
         const workspaceRoot = this.getWorkspaceRoot();
         if (!workspaceRoot) return;
+
+        // 危险场景检测：工作区 === 库路径
+        if (this.isWorkspaceEqualToLibrary()) {
+            const choice = await vscode.window.showWarningMessage(
+                `⚠️ 危险操作！当前工作区与库路径相同，删除将永久移除规则仓库源文件 "${ruleId}.md"！此操作不可撤销！`,
+                { modal: true },
+                '确认删除源文件'
+            );
+            if (choice !== '确认删除源文件') {
+                return;
+            }
+        }
 
         const targetPath = path.join(workspaceRoot, '.agent', 'rules', `${ruleId}.md`);
         if (fs.existsSync(targetPath)) {
