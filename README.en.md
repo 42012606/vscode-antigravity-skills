@@ -28,8 +28,21 @@ A visual management interface supporting:
 ![reverse_sync](resources/reverse_sync.png)
 
 The killer feature of **vscode-antigravity-skills**. Beyond deployment, we support syncing back to your library:
-- **Auto Detection**: Scans your current workspace's `.agent/` directory for unique items.
-- **Reverse Sync**: Click **"📥 Sync to Library"** to save locally created inspirations permanently.
+
+**Status Labels:**
+| Label | Meaning |
+|:------|:--------|
+| 📦 / 📜 | Type: Skill / Rule |
+| 🟢 `[NEW]` | Not in library, can upload |
+| 🟡 `[LOCAL ↑]` | Local changes, suggest upload |
+| 🔵 `[REMOTE ↓]` | Library updated, suggest pull |
+| 🔴 `[CONFLICT]` | Both sides modified, manual review needed |
+
+**Operations:**
+- **Auto Detection**: Scans your workspace's `.agent/` directory using hash analysis.
+- **Local Workspace**: View and handle items that need synchronization.
+- **Bidirectional Sync**: Click **"↑ Upload to Library"** or **"↓ Pull from Library"** to sync.
+
 
 ### 3. Flexible Display Modes
 ![library_view](resources/library_view.png)

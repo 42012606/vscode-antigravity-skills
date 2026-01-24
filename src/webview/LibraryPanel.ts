@@ -43,6 +43,12 @@ export class LibraryPanel {
 
         this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
 
+        // 监听 LibraryService 的变更事件
+        libraryService.onDidChange(() => {
+            console.log('[LibraryPanel] Detected library service change, updating UI...');
+            this._update(libraryService);
+        }, null, this._disposables);
+
         this._panel.webview.onDidReceiveMessage(
             async (message) => {
                 switch (message.command) {
@@ -91,20 +97,24 @@ export class LibraryPanel {
                         vscode.env.openExternal(vscode.Uri.parse('https://github.com/sponsors/你的用户名'));
                         break;
                     case 'syncSkill':
-                        const wsSkills = libraryService.getWorkspaceOnlySkills();
+                        const wsSkills = libraryService.getLocalWorkspaceSkills();
                         const wsSkill = wsSkills.find(s => s.id === message.id);
                         if (wsSkill) {
-                            await libraryService.syncSkillToLibrary(wsSkill);
-                            vscode.window.showInformationMessage(`📥 已同步到库: ${wsSkill.name}`);
+                            const direction = message.direction || 'up';
+                            await libraryService.syncSkill(wsSkill, direction);
+                            const actionText = direction === 'up' ? '同步到库' : '从库拉取';
+                            vscode.window.showInformationMessage(`📥 已${actionText}: ${wsSkill.name}`);
                             this._update(libraryService);
                         }
                         break;
                     case 'syncRule':
-                        const wsRules = libraryService.getWorkspaceOnlyRules();
+                        const wsRules = libraryService.getLocalWorkspaceRules();
                         const wsRule = wsRules.find(r => r.id === message.id);
                         if (wsRule) {
-                            await libraryService.syncRuleToLibrary(wsRule);
-                            vscode.window.showInformationMessage(`📥 已同步到库: ${wsRule.name}`);
+                            const direction = message.direction || 'up';
+                            await libraryService.syncRule(wsRule, direction);
+                            const actionText = direction === 'up' ? '同步到库' : '从库拉取';
+                            vscode.window.showInformationMessage(`📥 已${actionText}: ${wsRule.name}`);
                             this._update(libraryService);
                         }
                         break;
@@ -120,8 +130,8 @@ export class LibraryPanel {
         const allRules = await libraryService.getRules();
         const deployedSkills = libraryService.getDeployedSkills();
         const deployedRules = libraryService.getDeployedRules();
-        const workspaceOnlySkills = libraryService.getWorkspaceOnlySkills();
-        const workspaceOnlyRules = libraryService.getWorkspaceOnlyRules();
+        const localWorkspaceSkills = libraryService.getLocalWorkspaceSkills();
+        const localWorkspaceRules = libraryService.getLocalWorkspaceRules();
         const libPath = libraryService.getLibraryPath();
 
         this._panel.webview.html = this._getHtmlForWebview(
@@ -129,8 +139,8 @@ export class LibraryPanel {
             allRules,
             deployedSkills.map(s => s.id),
             deployedRules.map(r => r.id),
-            workspaceOnlySkills,
-            workspaceOnlyRules,
+            localWorkspaceSkills,
+            localWorkspaceRules,
             libPath
         );
     }
@@ -162,6 +172,7 @@ export class LibraryPanel {
             --accent-hover: #79c0ff;
             --success: #3fb950;
             --warning: #d29922;
+            --danger: #f85149;
             --gradient-start: #667eea;
             --gradient-end: #764ba2;
         }
@@ -369,29 +380,45 @@ export class LibraryPanel {
         }
 
         .btn-danger:hover {
-            background: #f85149;
-            border-color: #f85149;
+            background: var(--danger);
+            border-color: var(--danger);
             color: white;
         }
 
         .btn-sync {
-            background: linear-gradient(135deg, #58a6ff, #3fb950);
-            color: white;
-            border: none;
             padding: 8px 14px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 12px;
             transition: all 0.2s;
+            border: none;
+            color: white;
         }
 
-        .btn-sync:hover {
+        .btn-sync-up {
+            background: linear-gradient(135deg, #58a6ff, #3fb950);
+        }
+
+        .btn-sync-up:hover {
             transform: scale(1.02);
             box-shadow: 0 4px 12px rgba(88, 166, 255, 0.4);
         }
 
+        .btn-sync-down {
+            background: linear-gradient(135deg, #d29922, #ea4aaa);
+        }
+
+        .btn-sync-down:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(210, 153, 34, 0.4);
+        }
+
+        .btn-sync-conflict {
+            background: var(--danger);
+        }
+
         .workspace-only {
-            border-color: #d29922;
+            border-color: var(--warning);
         }
 
         .collapsible .section-header {
@@ -505,7 +532,7 @@ export class LibraryPanel {
                 📂 库路径: ${libPath ? `<code>${libPath}</code>` : '<span style="color: var(--warning)">未设置</span>'}
             </div>
             <div class="toolbar-actions">
-                <button onclick="refresh()">🔄 刷新</button>
+                <button onclick="refresh()">🔄 刷新数据</button>
                 <button onclick="setLibraryPath()">📁 设置路径</button>
             </div>
         </div>
@@ -574,34 +601,90 @@ export class LibraryPanel {
         ${(workspaceOnlySkills.length > 0 || workspaceOnlyRules.length > 0) ? `
         <div class="section collapsible workspace-only">
             <div class="section-header" onclick="toggleSection(this)">
-                <span class="section-title">🔄 工作区独有 <span class="badge" style="background:#d29922">${workspaceOnlySkills.length + workspaceOnlyRules.length}</span></span>
+                <span class="section-title">🔄 本地工作区对比 <span class="badge" style="background:#d29922">${workspaceOnlySkills.length + workspaceOnlyRules.length}</span></span>
                 <span class="toggle-icon">▼</span>
             </div>
             <div class="item-list">
-                ${workspaceOnlySkills.map(s => `
+                ${workspaceOnlySkills.map(s => {
+                        const isNew = s.status === 'new';
+                        const isConflict = s.status === 'conflict';
+                        const isRemoteAhead = s.status === 'remote_ahead';
+                        const isLocalAhead = s.status === 'local_ahead';
+
+                        let descText = s.syncHint || '未同步';
+                        let descClass = '';
+                        if (isConflict) {
+                            descText = '⚠️ 冲突：双边均有修改';
+                            descClass = 'text-warning';
+                        } else if (isRemoteAhead) {
+                            descText = '仓库内容比本地更新';
+                        } else if (isLocalAhead) {
+                            descText = '本地已修改，建议上传';
+                        }
+
+                        const renderButtons = () => {
+                            if (isNew) {
+                                return `<button class="btn-sync btn-sync-up" onclick="syncSkill('${s.id}', 'up')">↑ 上传到库</button>`;
+                            }
+                            return `
+                            <button class="btn-sync btn-sync-up" onclick="syncSkill('${s.id}', 'up')">↑ 上传到库</button>
+                            <button class="btn-sync btn-sync-down" onclick="syncSkill('${s.id}', 'down')">↓ 从库拉取</button>
+                        `;
+                        };
+
+                        return `
                     <div class="item">
                         <div class="item-info">
                             <div class="item-name">📦 ${s.name}</div>
-                            <div class="item-desc">${s.description || '工作区独有 Skill'}</div>
+                            <div class="item-desc ${descClass}">${descText}</div>
                         </div>
                         <div class="item-actions">
-                            <button class="btn-sync" onclick="syncSkill('${s.id}')">📥 同步到库</button>
+                            ${renderButtons()}
                             <button class="btn-danger" onclick="removeSkill('${s.id}')">🗑️</button>
                         </div>
                     </div>
-                `).join('')}
-                ${workspaceOnlyRules.map(r => `
+                    `;
+                    }).join('')}
+                ${workspaceOnlyRules.map(r => {
+                        const isNew = r.status === 'new';
+                        const isConflict = r.status === 'conflict';
+                        const isRemoteAhead = r.status === 'remote_ahead';
+                        const isLocalAhead = r.status === 'local_ahead';
+
+                        let descText = r.syncHint || '未同步';
+                        let descClass = '';
+                        if (isConflict) {
+                            descText = '⚠️ 冲突：双边均有修改';
+                            descClass = 'text-warning';
+                        } else if (isRemoteAhead) {
+                            descText = '仓库内容比本地更新';
+                        } else if (isLocalAhead) {
+                            descText = '本地已修改，建议上传';
+                        }
+
+                        const renderButtons = () => {
+                            if (isNew) {
+                                return `<button class="btn-sync btn-sync-up" onclick="syncRule('${r.id}', 'up')">↑ 上传到库</button>`;
+                            }
+                            return `
+                            <button class="btn-sync btn-sync-up" onclick="syncRule('${r.id}', 'up')">↑ 上传到库</button>
+                            <button class="btn-sync btn-sync-down" onclick="syncRule('${r.id}', 'down')">↓ 从库拉取</button>
+                        `;
+                        };
+
+                        return `
                     <div class="item">
                         <div class="item-info">
                             <div class="item-name">📜 ${r.name}</div>
-                            <div class="item-desc">${r.description || '工作区独有 Rule'}</div>
+                            <div class="item-desc ${descClass}">${descText}</div>
                         </div>
                         <div class="item-actions">
-                            <button class="btn-sync" onclick="syncRule('${r.id}')">📥 同步到库</button>
+                            ${renderButtons()}
                             <button class="btn-danger" onclick="removeRule('${r.id}')">🗑️</button>
                         </div>
                     </div>
-                `).join('')}
+                    `;
+                    }).join('')}
             </div>
         </div>
         ` : ''}
@@ -653,12 +736,12 @@ export class LibraryPanel {
             vscode.postMessage({ command: 'removeRule', id });
         }
 
-        function syncSkill(id) {
-            vscode.postMessage({ command: 'syncSkill', id });
+        function syncSkill(id, direction) {
+            vscode.postMessage({ command: 'syncSkill', id, direction });
         }
 
-        function syncRule(id) {
-            vscode.postMessage({ command: 'syncRule', id });
+        function syncRule(id, direction) {
+            vscode.postMessage({ command: 'syncRule', id, direction });
         }
 
         function toggleSection(header) {
