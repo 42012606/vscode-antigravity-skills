@@ -184,18 +184,22 @@ export class LibraryService {
         // 1. 统一换行符为 \n
         let normalized = content.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
 
-        // 2. 确保包含 trigger: always_on
-        if (!normalized.includes('trigger: always_on')) {
-            if (normalized.startsWith('---')) {
-                const parts = normalized.split('---');
-                if (parts.length >= 3) {
-                    const frontmatter = parts[1];
-                    parts[1] = frontmatter.trim() + '\ntrigger: always_on\n';
-                    normalized = parts.join('---');
-                }
-            } else {
-                normalized = `---\ntrigger: always_on\n---\n\n` + normalized;
+        const frontmatterRegex = /^---\n([\s\S]+?)\n---/;
+        const match = normalized.match(frontmatterRegex);
+
+        if (match) {
+            // 存在 Frontmatter
+            const frontmatter = match[1];
+            // 检查是否有 trigger 属性 (简单的正则检查 key)
+            if (!/^\s*trigger:/m.test(frontmatter)) {
+                // 如果最后没有换行符，补一个，否则直接追加
+                const suffix = frontmatter.endsWith('\n') ? '' : '\n';
+                const newFrontmatter = frontmatter + suffix + 'trigger: always_on';
+                normalized = normalized.replace(frontmatter, newFrontmatter);
             }
+        } else {
+            // 不存在 Frontmatter，创建新的
+            normalized = `---\ntrigger: always_on\n---\n\n` + normalized;
         }
 
         return normalized;
@@ -647,6 +651,81 @@ export class LibraryService {
         return localRules;
     }
 
+    // 通用同步确认弹窗
+    private async confirmSync(name: string, direction: 'up' | 'down', status: SyncStatus): Promise<boolean> {
+        let message = '';
+        let detail = '';
+        let modal = true;
+        let type: 'info' | 'warning' = 'info';
+        let action = '确认继续';
+
+        const isUp = direction === 'up';
+
+        // 基础场景判断
+        switch (status) {
+            case 'new':
+                // 本地独有
+                if (isUp) {
+                    message = `确认上传新技能/规则 "${name}" 到库？`;
+                    detail = '将在库中创建新副本，成为其他成员可用的标准版本。';
+                } else {
+                    vscode.window.showErrorMessage(`❌ "${name}" 仅在本地存在，无法从库拉取。`);
+                    return false;
+                }
+                break;
+            case 'synced':
+                // 已同步
+                message = `"${name}" 内容一致，确认强制${isUp ? '上传' : '拉取'}？`;
+                detail = isUp ? '将使用本地内容强制覆盖库中内容。' : '将使用库中内容强制覆盖本地内容。';
+                break;
+            case 'local_ahead':
+                // 本地较新
+                if (isUp) {
+                    message = `确认上传 "${name}" 到库？`;
+                    detail = '库中的旧版本将被本地新版本覆盖。'; // 正常更新操作
+                } else {
+                    type = 'warning';
+                    message = `⚠️ 警告：本地 "${name}" 有未同步修改，从库拉取将覆盖！`;
+                    detail = '本地修改将丢失且无法撤销！';
+                    action = '确认覆盖本地修改';
+                }
+                break;
+            case 'remote_ahead':
+                // 远程较新
+                if (isUp) {
+                    type = 'warning';
+                    message = `⚠️ 警告：库中 "${name}" 版本较新，上传将覆盖库中版本！`;
+                    detail = '库中的最新更新将丢失！';
+                    action = '确认覆盖库内容';
+                } else {
+                    message = `确认从库拉取 "${name}"？`;
+                    detail = '本地版本将被库中最新版本覆盖。'; // 正常更新
+                }
+                break;
+            case 'conflict':
+                // 冲突
+                type = 'warning';
+                message = `⚠️ 严重冲突："${name}" 双边均有修改！`;
+                detail = isUp
+                    ? '上传将强行覆盖库中的修改！'
+                    : '拉取将强行覆盖本地的修改！';
+                action = isUp ? '确认覆盖库' : '确认覆盖本地';
+                break;
+        }
+
+        // 将 detail 放入 options 中，这样会在弹窗中作为副标题显示
+        const options: vscode.MessageOptions = { modal, detail };
+
+        let choice: string | undefined;
+        if (type === 'warning') {
+            choice = await vscode.window.showWarningMessage(message, options, action);
+        } else {
+            choice = await vscode.window.showInformationMessage(message, options, action);
+        }
+
+        return choice === action;
+    }
+
     // 同步 Skill（支持双向）
     async syncSkill(skill: SkillItem, direction: 'up' | 'down'): Promise<void> {
         const libPath = this.getLibraryPath();
@@ -661,6 +740,17 @@ export class LibraryService {
         const localSkillPath = path.join(workspaceRoot, '.agent', 'skills', skill.id);
 
         try {
+            // 获取最新状态
+            let status: SyncStatus = 'new';
+            if (fs.existsSync(localSkillPath)) {
+                const analysis = this.analyzeSkillStatus(skill.id, localSkillPath);
+                status = analysis.status;
+            }
+
+            // 弹出确认框
+            const confirmed = await this.confirmSync(skill.name, direction, status);
+            if (!confirmed) return;
+
             if (direction === 'up') {
                 const targetDir = path.join(libPath, '.agent', 'skills');
                 if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
@@ -699,6 +789,17 @@ export class LibraryService {
         const localRulePath = path.join(workspaceRoot, '.agent', 'rules', `${rule.id}.md`);
 
         try {
+            // 获取最新状态
+            let status: SyncStatus = 'new';
+            if (fs.existsSync(localRulePath)) {
+                const analysis = this.analyzeRuleStatus(rule.id, localRulePath);
+                status = analysis.status;
+            }
+
+            // 弹出确认框
+            const confirmed = await this.confirmSync(rule.name, direction, status);
+            if (!confirmed) return;
+
             if (direction === 'up') {
                 const targetDir = path.join(libPath, '.agent', 'rules');
                 if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
@@ -709,6 +810,7 @@ export class LibraryService {
 
                 // 拉取时也要确保注入 trigger (以防库里没有)
                 const ruleItem = { ...rule, path: libRulePath };
+                // deployRule 本身就是为了从外部（库）复制到本地，正好复用逻辑
                 await this.deployRule(ruleItem);
             }
 

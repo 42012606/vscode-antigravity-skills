@@ -1,0 +1,1060 @@
+﻿diff --git a/.agent/rules/123.md b/.agent/rules/123.md
+new file mode 100644
+index 0000000..bb7e186
+--- /dev/null
++++ b/.agent/rules/123.md
+@@ -0,0 +1,5 @@
++---
++trigger: always_on
++---
++
++鍘?3
+\ No newline at end of file
+diff --git a/.agent/rules/dev.md b/.agent/rules/dev-flow.md
+similarity index 87%
+rename from .agent/rules/dev.md
+rename to .agent/rules/dev-flow.md
+index 58974a0..9b8bd5a 100644
+--- a/.agent/rules/dev.md
++++ b/.agent/rules/dev-flow.md
+@@ -1,8 +1,8 @@
+ ---
++description: 瑙勮寖寮€鍙戝伐浣滄祦銆佹枃浠舵磥鐧栥€佹枃妗ｆ灦鏋?(5+1) 鍙婁唬鐮佸垎灞傛灦鏋勫畧鍒欍€? trigger: always_on
+ ---
+-
+-# 馃洜锔?WORKSPACE: DEV FLOW (寮€鍙戞祦)
++# 馃洜锔?DEV FLOW (寮€鍙戞祦瑙勫垯)
+ 
+ ## 1. 寮€鍙戝伐浣滄祦 (Development Workflow)
+ * **娓愯繘寮忓紑鍙?*: 涓ョ涓婃潵灏卞啓浠ｇ爜銆傚繀椤婚€氳繃澶氳疆瀵硅瘽杩唬锛?Q&A Loop"锛夛紝鍘樻竻鎵€鏈夌枒鐐瑰悗鏂瑰彲鍔ㄦ墜銆?@@ -37,8 +37,3 @@ trigger: always_on
+ * **绂佹涔卞缓鏂囦欢**: 鏂板浠ｇ爜鏂囦欢鍓嶏紝蹇呴』纭鍏舵墍灞炴ā鍧楃洰褰曘€傝嫢鏃犲悎閫傜洰褰曪紝闇€鍏堟矡閫氭槸鍚︽柊寤烘ā鍧椼€? * **鍗曚竴鍏ュ彛**: 姣忎釜妯″潡瀵瑰鏆撮湶鐨勬帴鍙ｅ簲閫氳繃 `index.ts` / `__init__.py` 缁熶竴瀵煎嚭銆? * **渚濊禆鏂瑰悜**: 鍏叡妯″潡 (`common/utils`) 涓嶅緱渚濊禆涓氬姟妯″潡 (`modules/xxx`)銆?-
+-## 5. Git 鎻愪氦瑙勮寖 (Git Commit Convention)
+-* **璇█**: 鎵€鏈?commit message 蹇呴』浣跨敤**绠€浣撲腑鏂?*銆?-* **鏍煎紡**: `<type>: <鎻忚堪>` (濡?`feat: 鏂板鐢ㄦ埛鐧诲綍鍔熻兘`)
+-* **绫诲瀷**: feat(鍔熻兘) | fix(淇) | docs(鏂囨。) | refactor(閲嶆瀯) | chore(鏉傞」)
+\ No newline at end of file
+diff --git a/.agent/skills/vscode-publish/SKILL.md b/.agent/skills/vscode-publish/SKILL.md
+index 5f95783..ea1f139 100644
+--- a/.agent/skills/vscode-publish/SKILL.md
++++ b/.agent/skills/vscode-publish/SKILL.md
+@@ -13,55 +13,38 @@ description: VS Code 鎵╁睍鍙戝竷鍏ㄦ祦绋嬪姪鎵嬶紝鏀寔鎵撳寘鏍￠獙銆佸競鍦?    // turbo
+    `npm run compile`
+ 
+-2. **鐗堟湰涓庡彂甯冭€?*: 妫€鏌?`package.json` 涓殑 `version` 鍜?`publisher`銆?-   > [!IMPORTANT]
+-   > 濡傛灉杩欐槸棣栨鍙戝竷锛岃纭繚宸插湪 [Marketplace 绠＄悊椤礭(https://marketplace.visualstudio.com/manage) 鍒涘缓浜嗗彂甯冭€呫€?+2. **鐗堟湰鍙?*: 妫€鏌?`package.json` 涓殑 `version`锛屽闇€鍗囩骇璇蜂慨鏀圭増鏈彿銆? 
+-3. **渚濊禆妫€鏌?*: 纭繚 `out/` 鏂囦欢澶瑰凡鐢熸垚涓斿寘鍚渶鏂扮殑浠ｇ爜銆?+## 馃摝 鎵撳寘涓庡彂甯冿紙鍗婅嚜鍔ㄦ祦绋嬶級
+ 
+-## 馃摝 鎵撳寘涓庢祴璇?+鎵ц浠ヤ笅姝ラ鍚庯紝鍚戠敤鎴锋眹鎶ョ粨鏋滐細
+ 
+ 1. **鐢熸垚 VSIX 鍖?*:
+    // turbo
+    `npx vsce package`
+ 
+-2. **鏈湴瀹夎娴嬭瘯**:
+-   浣犲彲浠ュ皢鐢熸垚鐨?`.vsix` 鏂囦欢鐩存帴鎷栧叆 VS Code 杩涜瀹夎锛岄獙璇佸姛鑳芥槸鍚︾鍚堥鏈熴€?-
+-## 馃殌 鍙戝竷娴佺▼
+-
+-### A. 甯傚満鍙戝竷 (Marketplace)
+-
+-1. **鐧诲綍鍙戝竷鑰?*:
+-   浣犻渶瑕佷粠 Azure DevOps 鑾峰緱 Personal Access Token (PAT)銆?-   `npx vsce login <publisher_id>`
+-
+-2. **姝ｅ紡鍙戝竷**:
++2. **Git 鎻愪氦骞舵帹閫?*:
+    // turbo
+-   `npx vsce publish`
+-
+-### B. GitHub 鍙戝竷
++   `git add -A; git commit -m "feat: v<version> <绠€鐭弿杩?"; git push origin main`
+ 
+-1. **鎵撴爣绛惧苟鍚屾**:
+-   `git tag v<version>`
+-   `git push origin v<version>`
+-
+-2. **鍒涘缓 GitHub Release**:
+-   鍦ㄤ粨搴撻〉闈㈠皢鐢熸垚鐨?`.vsix` 浣滀负闄勪欢涓婁紶銆?+3. **鍙戝竷鍒?Open VSX**锛堜娇鐢?private-credentials 涓殑 token锛?
++   // turbo
++   `npx ovsx publish <vsix鏂囦欢鍚? -p <Open_VSX_Token>`
+ 
+----
++4. **姹囨姤缁撴灉**: 鍚戠敤鎴峰睍绀轰互涓嬩俊鎭細
++   - 鉁?褰撳墠鐗堟湰鍙? `<version>`
++   - 鉁?GitHub 宸叉帹閫?+   - 鉁?Open VSX 宸插彂甯?+   - 鈴?**寰蒋甯傚満闇€鎵嬪姩涓婁紶**: [Marketplace 绠＄悊椤礭(https://marketplace.visualstudio.com/manage/publishers/42012606)
++   - 馃搨 VSIX 鏂囦欢浣嶇疆: `<椤圭洰鐩綍>/<vsix鏂囦欢鍚?`
+ 
+-## 馃摚 鎺ㄥ箍涓庣ぞ浜?+## 馃摎 鍑嵁浣嶇疆
+ 
+-1. **鍛藉悕涓€鑷存€?*: 纭繚 `package.json` 涓殑 `displayName` 涓?GitHub 浠撳簱鍚嶉€昏緫涓€鑷达紝鏂逛究鐢ㄦ埛鎼滅储銆?-2. **鐐规槦 (Star)**: 妫€鏌?`README.md` 涓凡鏈?GitHub Star 寰界珷鍜岄摼鎺ャ€?-3. **璧炲姪 (Sponsor)**: 妫€鏌?`README.md` 涓槸鍚﹀凡娣诲姞 "Buy Me A Coffee" 鎴栧叾浠栬禐鍔╅摼鎺ャ€?-   > [!TIP]
+-   > 璁板緱灏?`README.md` 涓殑鍗犱綅閾炬帴锛堝 `yourusername`锛夋浛鎹负浣犵湡瀹炵殑涓汉閾炬帴銆?+Token 瀛樻斁鍦?`private-credentials` skill 涓細
++- **Open VSX Token**: 鐢ㄤ簬鑷姩鍙戝竷鍒?Open VSX
++- **寰蒋甯傚満**: 鏃?PAT锛岄渶鎵嬪姩涓婁紶 VSIX
+ 
+ ---
+ 
+-## 馃摎 甯歌闂
+-
+-- **PAT 杩囨湡**: 濡傛灉鍙戝竷澶辫触骞舵彁绀烘潈闄愰棶棰橈紝璇锋鏌?Azure DevOps 涓婄殑 PAT 鏄惁杩囨湡鎴栨潈闄愪笉瓒筹紙蹇呴』鍏锋湁 Marketplace: Manage 鏉冮檺锛夈€?-- **Read-only 妯″紡**: `vsce package` 鏃跺鏋滄姤閿欙紝璇锋鏌ユ枃浠舵槸鍚﹁鍗犵敤銆?+> [!TIP]
++> 鍙戝竷瀹屾垚鍚庯紝璁板緱鍒锋柊娴忚鍣ㄦ煡鐪?Open VSX 涓婄殑鏇存柊锛?diff --git a/README.en.md b/README.en.md
+index 4259878..1ce52fd 100644
+--- a/README.en.md
++++ b/README.en.md
+@@ -28,8 +28,21 @@ A visual management interface supporting:
+ ![reverse_sync](resources/reverse_sync.png)
+ 
+ The killer feature of **vscode-antigravity-skills**. Beyond deployment, we support syncing back to your library:
+-- **Auto Detection**: Scans your current workspace's `.agent/` directory for unique items.
+-- **Reverse Sync**: Click **"馃摜 Sync to Library"** to save locally created inspirations permanently.
++
++**Status Labels:**
++| Label | Meaning |
++|:------|:--------|
++| 馃摝 / 馃摐 | Type: Skill / Rule |
++| 馃煝 `[NEW]` | Not in library, can upload |
++| 馃煛 `[LOCAL 鈫慮` | Local changes, suggest upload |
++| 馃數 `[REMOTE 鈫揮` | Library updated, suggest pull |
++| 馃敶 `[CONFLICT]` | Both sides modified, manual review needed |
++
++**Operations:**
++- **Auto Detection**: Scans your workspace's `.agent/` directory using hash analysis.
++- **Local Workspace**: View and handle items that need synchronization.
++- **Bidirectional Sync**: Click **"鈫?Upload to Library"** or **"鈫?Pull from Library"** to sync.
++
+ 
+ ### 3. Flexible Display Modes
+ ![library_view](resources/library_view.png)
+diff --git a/README.md b/README.md
+index 88005f9..9019401 100644
+--- a/README.md
++++ b/README.md
+@@ -28,8 +28,20 @@ VS Code 鎵╁睍锛岀敤浜庣粺涓€绠＄悊銆侀儴缃插拰鍚屾 Google Antigravity AI 妯? ![reverse_sync](resources/reverse_sync.png)
+ 
+ 杩欐槸 **Skills Manager** 鐨勬牳蹇冪珵浜夊姏銆傞櫎浜嗕粠搴撲腑閮ㄧ讲锛屾垜浠繕鏀寔浠庡伐浣滃尯鍚屾鍥炲簱锛?-- **鑷姩妫€娴?*锛氭彃浠朵細鑷姩鎵弿褰撳墠宸ヤ綔鍖虹殑 `.agent/` 鐩綍锛岃瘑鍒伐浣滃尯鐙湁鐨?Skill/Rule銆?-- **鍙嶅悜鍚屾**锛氬湪 "宸ヤ綔鍖虹嫭鏈? 鍖哄煙锛岀偣鍑?**"馃摜 鍚屾鍒板簱"**锛屽嵆鍙皢涓存椂鍒涘缓鐨勭伒鎰熸案涔呬繚瀛樺埌浣犵殑鏍囧噯鍖栨妧鑳藉簱涓€?+
++**鐘舵€佹爣绛捐鏄庯細**
++| 鏍囩 | 鍚箟 |
++|:-----|:-----|
++| 馃摝 / 馃摐 | 绫诲瀷鏍囩锛歋kill / Rule |
++| 馃煝 `[NEW]` | 搴撲腑鏃犳椤癸紝鍙笂浼?|
++| 馃煛 `[LOCAL 鈫慮` | 鏈湴宸蹭慨鏀癸紝寤鸿涓婁紶 |
++| 馃數 `[REMOTE 鈫揮` | 搴撴湁鏇存柊锛屽缓璁媺鍙?|
++| 馃敶 `[CONFLICT]` | 鍙岃竟鍧囨湁淇敼锛岄渶浜哄伐澶勭悊 |
++
++**鎿嶄綔锛?*
++- **鑷姩妫€娴?*锛氭彃浠朵細鑷姩鎵弿褰撳墠宸ヤ綔鍖虹殑 `.agent/` 鐩綍锛岄€氳繃鍝堝笇鍒嗘瀽璇嗗埆鏈湴涓庡簱鐨勫樊寮傘€?+- **鏈湴宸ヤ綔鍖?*锛氬湪 "鏈湴宸ヤ綔鍖? 鍖哄煙锛屾煡鐪嬪苟澶勭悊闇€瑕佸悓姝ョ殑 Skill/Rule銆?+- **鍙屽悜鍚屾**锛氱偣鍑?**"鈫?涓婁紶鍒板簱"** 鎴?**"鈫?浠庡簱鎷夊彇"**锛屽嵆鍙畬鎴愬悓姝ャ€? 
+ ### 3. 鐏垫椿鐨勬樉绀烘ā寮? ![library_view](resources/library_view.png)
+diff --git a/src/services/libraryService.ts b/src/services/libraryService.ts
+index f6e739a..dd5d9ae 100644
+--- a/src/services/libraryService.ts
++++ b/src/services/libraryService.ts
+@@ -2,12 +2,18 @@ import * as vscode from 'vscode';
+ import * as fs from 'fs';
+ import * as path from 'path';
+ import * as cp from 'child_process';
++import * as crypto from 'crypto';
++
++// 鍚屾鐘舵€佹灇涓?+export type SyncStatus = 'new' | 'synced' | 'local_ahead' | 'remote_ahead' | 'conflict';
+ 
+ export interface SkillItem {
+     id: string;
+     name: string;
+     description: string;
+     path: string;
++    status?: SyncStatus;      // 鍚屾鐘舵€?+    syncHint?: string;        // 琛屽唴鐘舵€佹彁绀? }
+ 
+ export interface RuleItem {
+@@ -15,14 +21,233 @@ export interface RuleItem {
+     name: string;
+     description: string;
+     path: string;
++    status?: SyncStatus;      // 鍚屾鐘舵€?+    syncHint?: string;        // 琛屽唴鐘舵€佹彁绀?+}
++
++// 鍏冩暟鎹粨鏋?+interface SyncMetaEntry {
++    lastSyncHash: string;
++    lastSyncTime: string;
++}
++
++interface SyncMeta {
++    skills: { [id: string]: SyncMetaEntry };
++    rules: { [id: string]: SyncMetaEntry };
+ }
+ 
++
+ export class LibraryService {
+     private skills: SkillItem[] = [];
+     private rules: RuleItem[] = [];
++    private _onDidChange = new vscode.EventEmitter<void>();
++    public readonly onDidChange = this._onDidChange.event;
++    private watchers: vscode.FileSystemWatcher[] = [];
+ 
+     constructor() {
+         this.refresh();
++        this.setupWatchers();
++    }
++
++    private setupWatchers(): void {
++        // 娓呯悊鏃х殑 Watchers
++        this.watchers.forEach(w => w.dispose());
++        this.watchers = [];
++
++        const libPath = this.getLibraryPath();
++        const workspaceRoot = this.getWorkspaceRoot();
++
++        console.log(`[LibraryService] Setting up watchers. Lib: ${libPath}, Workspace: ${workspaceRoot}`);
++
++        if (libPath && fs.existsSync(libPath)) {
++            const pattern = new vscode.RelativePattern(libPath, '**/.agent/**/*.{md,json}');
++            const watcher = vscode.workspace.createFileSystemWatcher(pattern);
++            watcher.onDidChange(() => this.onFileChanged());
++            watcher.onDidCreate(() => this.onFileChanged());
++            watcher.onDidDelete(() => this.onFileChanged());
++            this.watchers.push(watcher);
++        }
++
++        if (workspaceRoot && fs.existsSync(workspaceRoot)) {
++            const pattern = new vscode.RelativePattern(workspaceRoot, '**/.agent/**/*.{md,json}');
++            const watcher = vscode.workspace.createFileSystemWatcher(pattern);
++            watcher.onDidChange(() => this.onFileChanged());
++            watcher.onDidCreate(() => this.onFileChanged());
++            watcher.onDidDelete(() => this.onFileChanged());
++            this.watchers.push(watcher);
++        }
++    }
++
++    private onFileChanged(): void {
++        console.log('[LibraryService] File change detected, refreshing...');
++        this.refresh();
++        this._onDidChange.fire();
++    }
++
++    // ========== 鍏冩暟鎹鐞?==========
++
++    private getSyncMetaPath(): string | undefined {
++        const workspaceRoot = this.getWorkspaceRoot();
++        if (!workspaceRoot) return undefined;
++        return path.join(workspaceRoot, '.agent', '.sync_meta.json');
++    }
++
++    private loadSyncMeta(): SyncMeta {
++        const metaPath = this.getSyncMetaPath();
++        if (metaPath && fs.existsSync(metaPath)) {
++            try {
++                const content = fs.readFileSync(metaPath, 'utf-8');
++                return JSON.parse(content);
++            } catch {
++                // 鏂囦欢鎹熷潖锛岃繑鍥炵┖缁撴瀯
++            }
++        }
++        return { skills: {}, rules: {} };
++    }
++
++    private saveSyncMeta(meta: SyncMeta): void {
++        const metaPath = this.getSyncMetaPath();
++        if (!metaPath) return;
++        const dir = path.dirname(metaPath);
++        if (!fs.existsSync(dir)) {
++            fs.mkdirSync(dir, { recursive: true });
++        }
++        fs.writeFileSync(metaPath, JSON.stringify(meta, null, 2), 'utf-8');
++    }
++
++    // 璁＄畻鐩綍鐨勫唴瀹瑰搱甯岋紙閫掑綊鎵€鏈夋枃浠讹級
++    private computeDirHash(dirPath: string): string {
++        if (!fs.existsSync(dirPath)) return '';
++        const hash = crypto.createHash('md5');
++        const entries = fs.readdirSync(dirPath, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name));
++        for (const entry of entries) {
++            const fullPath = path.join(dirPath, entry.name);
++            if (entry.isDirectory()) {
++                hash.update(this.computeDirHash(fullPath));
++            } else {
++                hash.update(fs.readFileSync(fullPath));
++            }
++        }
++        return hash.digest('hex');
++    }
++
++    // 璁＄畻鍗曚釜鏂囦欢鐨勫搱甯?+    private computeFileHash(filePath: string): string {
++        if (!fs.existsSync(filePath)) return '';
++        const content = fs.readFileSync(filePath);
++        return crypto.createHash('md5').update(content).digest('hex');
++    }
++
++    // 鍒嗘瀽 Skill 鍚屾鐘舵€?+    private analyzeSkillStatus(skillId: string, localPath: string): { status: SyncStatus; hint: string } {
++        const libPath = this.getLibraryPath();
++        const meta = this.loadSyncMeta();
++        const entry = meta.skills[skillId];
++
++        // 鏌ユ壘搴撲腑璇?Skill 鐨勪綅缃紙浠呮敮鎸佹爣鍑?.agent 璺緞锛?+        let libSkillPath = '';
++        if (libPath) {
++            const p = path.join(libPath, '.agent', 'skills', skillId);
++            libSkillPath = fs.existsSync(p) ? p : '';
++        }
++
++        const localHash = this.computeDirHash(localPath);
++        const libHash = libSkillPath ? this.computeDirHash(libSkillPath) : '';
++        const baseHash = entry?.lastSyncHash || '';
++
++        // 搴撲腑涓嶅瓨鍦?+        if (!libHash) {
++            return { status: 'new', hint: '搴撲腑鏃犳鎶€鑳斤紝鍙笂浼? };
++        }
++
++        // 瀹屽叏涓€鑷?+        if (localHash === libHash) {
++            return { status: 'synced', hint: '宸插悓姝? };
++        }
++
++        // 鏈湴鏈変慨鏀癸紝搴撴湭鍙?+        if (localHash !== baseHash && libHash === baseHash) {
++            return { status: 'local_ahead', hint: '鏈湴宸蹭慨鏀癸紝寤鸿涓婁紶' };
++        }
++
++        // 搴撴湁鏇存柊锛屾湰鍦版湭鍙?+        if (localHash === baseHash && libHash !== baseHash) {
++            return { status: 'remote_ahead', hint: '搴撴湁鏇存柊锛屽缓璁媺鍙? };
++        }
++
++        // 鍙岃竟閮芥湁淇敼
++        return { status: 'conflict', hint: '鈿狅笍 鍐茬獊锛氬弻杈瑰潎鏈変慨鏀? };
++    }
++
++    // 瑙勮寖鍖?Rule 鍐呭锛堢粺涓€鎹㈣绗︼紝骞剁‘淇濆寘鍚?trigger锛?+    private normalizeRuleContent(content: string): string {
++        // 1. 缁熶竴鎹㈣绗︿负 \n
++        let normalized = content.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
++
++        // 2. 纭繚鍖呭惈 trigger: always_on
++        if (!normalized.includes('trigger: always_on')) {
++            if (normalized.startsWith('---')) {
++                const parts = normalized.split('---');
++                if (parts.length >= 3) {
++                    const frontmatter = parts[1];
++                    parts[1] = frontmatter.trim() + '\ntrigger: always_on\n';
++                    normalized = parts.join('---');
++                }
++            } else {
++                normalized = `---\ntrigger: always_on\n---\n\n` + normalized;
++            }
++        }
++
++        return normalized;
++    }
++
++    // 璁＄畻 Rule 鐨勬爣鍑嗗寲鍝堝笇
++    private computeRuleHash(filePath: string): string {
++        if (!fs.existsSync(filePath)) return '';
++        const content = fs.readFileSync(filePath, 'utf8');
++        const normalized = this.normalizeRuleContent(content);
++        return crypto.createHash('md5').update(normalized).digest('hex');
++    }
++
++    // 鍒嗘瀽 Rule 鍚屾鐘舵€?+    private analyzeRuleStatus(ruleId: string, localPath: string): { status: SyncStatus; hint: string } {
++        const libPath = this.getLibraryPath();
++        const meta = this.loadSyncMeta();
++        const entry = meta.rules[ruleId];
++
++        // 鏌ユ壘搴撲腑璇?Rule 鐨勪綅缃紙浠呮敮鎸佹爣鍑?.agent 璺緞锛?+        let libRulePath = '';
++        if (libPath) {
++            const p = path.join(libPath, '.agent', 'rules', `${ruleId}.md`);
++            libRulePath = fs.existsSync(p) ? p : '';
++        }
++
++        const localHash = this.computeRuleHash(localPath);
++        const libHash = libRulePath ? this.computeRuleHash(libRulePath) : '';
++        const baseHash = entry?.lastSyncHash || '';
++
++        // 搴撲腑涓嶅瓨鍦?+        if (!libHash) {
++            return { status: 'new', hint: '搴撲腑鏃犳瑙勫垯锛屽彲涓婁紶' };
++        }
++
++        // 瀹屽叏涓€鑷?+        if (localHash === libHash) {
++            return { status: 'synced', hint: '宸查儴缃? };
++        }
++
++        // 鏈湴鏈変慨鏀癸紝搴撴湭鍙?+        if (localHash !== baseHash && libHash === baseHash) {
++            return { status: 'local_ahead', hint: '鏈湴宸蹭慨鏀癸紝寤鸿涓婁紶' };
++        }
++
++        // 搴撴湁鏇存柊锛屾湰鍦版湭鍙?(娉ㄦ剰锛氳繖閲屾瘮杈冪殑鏄爣鍑嗗寲鍚庣殑 Hash锛屾墍浠ュ崟绾己澶?trigger 涓嶇畻鏇存柊)
++        if (localHash === baseHash && libHash !== baseHash) {
++            return { status: 'remote_ahead', hint: '搴撴湁鏇存柊锛屽缓璁媺鍙? };
++        }
++
++        // 鍙岃竟閮芥湁淇敼
++        return { status: 'conflict', hint: '鈿狅笍 鍐茬獊锛氬弻杈瑰潎鏈変慨鏀? };
+     }
+ 
+     getLibraryPath(): string {
+@@ -44,16 +269,21 @@ export class LibraryService {
+     }
+ 
+     refresh(): void {
++        console.log('[LibraryService] Refreshing data...');
+         this.skills = [];
+         this.rules = [];
+ 
+         const libPath = this.getLibraryPath();
++        console.log(`[LibraryService] Library Path: ${libPath}`);
++
+         if (!libPath || !fs.existsSync(libPath)) {
++            console.warn('[LibraryService] Library path invalid or missing');
+             return;
+         }
+ 
+         // 鎵弿 Skills
+         const skillsDir = path.join(libPath, '.agent', 'skills');
++        console.log(`[LibraryService] Scanning skills in: ${skillsDir}`);
+         if (fs.existsSync(skillsDir)) {
+             const dirs = fs.readdirSync(skillsDir, { withFileTypes: true });
+             for (const dir of dirs) {
+@@ -83,24 +313,9 @@ export class LibraryService {
+                 }
+             }
+         }
+-
+-        // 鍏煎鏃х洰褰?.gemini/rules/
+-        const oldRulesDir = path.join(libPath, '.gemini', 'rules');
+-        if (fs.existsSync(oldRulesDir)) {
+-            const files = fs.readdirSync(oldRulesDir, { withFileTypes: true });
+-            for (const file of files) {
+-                if (file.isFile() && file.name.endsWith('.md')) {
+-                    const rulePath = path.join(oldRulesDir, file.name);
+-                    const content = fs.readFileSync(rulePath, 'utf-8');
+-                    const parsed = this.parseRuleMd(content, file.name);
+-                    parsed.path = rulePath;
+-                    // 閬垮厤閲嶅
+-                    if (!this.rules.find(r => r.id === parsed.id)) {
+-                        this.rules.push(parsed);
+-                    }
+-                }
+-            }
+-        }
++        // 鎵弿瀹屾垚鍚庨€氱煡 UI
++        console.log('[LibraryService] Refresh complete. Notifying listeners...');
++        this._onDidChange.fire();
+     }
+ 
+     private parseSkillMd(content: string, fallbackName: string): SkillItem {
+@@ -120,20 +335,57 @@ export class LibraryService {
+     }
+ 
+     private parseRuleMd(content: string, filename: string): RuleItem {
+-        const id = filename.replace('.md', '');
++        const id = filename.toLowerCase().replace('.md', '').trim();
+         let name = id;
+         let description = '';
+ 
+-        const titleMatch = content.match(/^#\s+(.+)/m);
++        // 灏濊瘯瑙ｆ瀽 YAML Frontmatter 涓殑 description
++        const frontmatterMatch = content.match(/^---\r?\n([\s\S]+?)\r?\n---/);
++        if (frontmatterMatch) {
++            const frontmatterLines = frontmatterMatch[1].split(/\r?\n/);
++            for (const line of frontmatterLines) {
++                const descMatch = line.trim().match(/^description:\s*(.+)$/);
++                if (descMatch) {
++                    description = descMatch[1].trim();
++                    break;
++                }
++            }
++        }
++
++        // 绉婚櫎 YAML Frontmatter 浠ヤ究澶勭悊姝ｆ枃
++        const frontmatterRegex = /^---\r?\n[\s\S]+?\r?\n---\r?\n/;
++        const bodyContent = content.replace(frontmatterRegex, '').trim();
++
++        const titleMatch = bodyContent.match(/^#\s+(.+)/m);
+         if (titleMatch) {
+             name = titleMatch[1].trim();
+         }
+ 
+-        const lines = content.split('\n');
+-        for (const line of lines) {
+-            if (line && !line.startsWith('#') && !line.startsWith('*') && !line.startsWith('-') && line.trim().length > 10) {
+-                description = line.trim().substring(0, 60) + '...';
+-                break;
++        // 濡傛灉娌℃湁浠?Frontmatter 鎻愬彇鍒?description锛屽垯灏濊瘯浠庢鏂囨彁鍙?+        if (!description) {
++            const lines = bodyContent.split(/\r?\n/);
++            for (const line of lines) {
++                const trimmed = line.trim();
++                // 璺宠繃绌鸿鍜屾爣棰?+                if (!trimmed || trimmed.startsWith('#')) {
++                    continue;
++                }
++
++                // 娓呯悊鍒楄〃鏍囪 (*, -, 1.)
++                let cleanLine = trimmed;
++                if (trimmed.startsWith('*') || trimmed.startsWith('-')) {
++                    cleanLine = trimmed.replace(/^[\*\-]\s+/, '');
++                } else if (/^\d+\./.test(trimmed)) {
++                    cleanLine = trimmed.replace(/^\d+\.\s+/, '');
++                }
++
++                // 濡傛灉杩欎竴琛屾湁瀹炶川鍐呭锛屽氨鐢ㄥ畠鍋氭弿杩?+                if (cleanLine.length > 5) {
++                    // 鍘婚櫎鍙兘瀛樺湪鐨?markdown 鍔犵矖/鏂滀綋鏍囪
++                    cleanLine = cleanLine.replace(/\*\*/g, '').replace(/\*/g, '');
++                    description = cleanLine.substring(0, 60) + (cleanLine.length > 60 ? '...' : '');
++                    break;
++                }
+             }
+         }
+ 
+@@ -188,38 +440,28 @@ export class LibraryService {
+         if (!workspaceRoot) return [];
+ 
+         const deployed: RuleItem[] = [];
+-        const possibleDirs = [
+-            path.join(workspaceRoot, '.agent', 'rules'),
+-            path.join(workspaceRoot, '.gemini', 'rules')
+-        ];
+-
+-        console.log('[Skills Manager] Scanning for deployed rules in:', workspaceRoot);
+-
+-        for (const rulesDir of possibleDirs) {
+-            if (fs.existsSync(rulesDir)) {
+-                try {
+-                    const files = fs.readdirSync(rulesDir, { withFileTypes: true });
+-                    for (const file of files) {
+-                        if (file.isFile() && file.name.endsWith('.md')) {
+-                            const rawId = file.name.replace('.md', '');
+-                            const filePath = path.join(rulesDir, file.name);
+-                            const content = fs.readFileSync(filePath, 'utf8');
+-                            // 灏濊瘯鎻愬彇鏍囬
+-                            const titleMatch = content.match(/^#\s+(.+)/m);
+-                            const title = titleMatch ? titleMatch[1].trim() : '';
+-
+-                            // 鍙寜鏂囦欢鍚嶈鏁帮紝閬垮厤閲嶅
+-                            if (!deployed.find(r => r.id === rawId)) {
+-                                deployed.push({ id: rawId, name: title || file.name, description: '宸查儴缃?, path: filePath });
+-                            }
++        const rulesDir = path.join(workspaceRoot, '.agent', 'rules');
++
++        if (fs.existsSync(rulesDir)) {
++            try {
++                const files = fs.readdirSync(rulesDir, { withFileTypes: true });
++                for (const file of files) {
++                    if (file.isFile() && file.name.endsWith('.md')) {
++                        const rawId = file.name.toLowerCase().replace('.md', '').trim();
++                        const filePath = path.join(rulesDir, file.name);
++                        const content = fs.readFileSync(filePath, 'utf8');
++                        const titleMatch = content.match(/^#\s+(.+)/m);
++                        const title = titleMatch ? titleMatch[1].trim() : '';
++
++                        if (!deployed.find(r => r.id === rawId)) {
++                            deployed.push({ id: rawId, name: title || file.name, description: '宸查儴缃?, path: filePath });
+                         }
+                     }
+-                } catch (e) {
+-                    console.error(`[Skills Manager] Error reading rules directory ${rulesDir}:`, e);
+                 }
++            } catch (e) {
++                console.error(`[LibraryService] Error reading rules directory ${rulesDir}:`, e);
+             }
+         }
+-
+         return deployed;
+     }
+ 
+@@ -247,6 +489,16 @@ export class LibraryService {
+         } else {
+             fs.symlinkSync(skill.path, targetPath, 'dir');
+         }
++
++        // 鏇存柊鍏冩暟鎹?+        const meta = this.loadSyncMeta();
++        const newHash = this.computeDirHash(targetPath);
++        meta.skills[skill.id] = {
++            lastSyncHash: newHash,
++            lastSyncTime: new Date().toISOString()
++        };
++        this.saveSyncMeta(meta);
++        this.refresh();
+     }
+ 
+     async deployRule(rule: RuleItem): Promise<void> {
+@@ -264,7 +516,24 @@ export class LibraryService {
+             fs.mkdirSync(targetDir, { recursive: true });
+         }
+ 
+-        fs.copyFileSync(rule.path, targetPath);
++        let content = fs.readFileSync(rule.path, 'utf8');
++        // 浣跨敤鏍囧噯鍖栧唴瀹瑰啓鍏ユ湰鍦帮紙杩欎細娉ㄥ叆 trigger 骞剁粺涓€鎹㈣锛?+        content = this.normalizeRuleContent(content);
++
++        fs.writeFileSync(targetPath, content, 'utf8');
++
++        // 鏇存柊鍏冩暟鎹?+        const meta = this.loadSyncMeta();
++        // 鍏抽敭淇锛氫娇鐢?computeRuleHash 璁＄畻鍩哄噯鍝堝笇
++        // 杩欐牱璁＄畻鍑虹殑 hash 鍖呭惈浜?trigger锛屼笌鏈湴鏂囦欢鐨?hash 涓€鑷?+        const newHash = this.computeRuleHash(rule.path);
++
++        meta.rules[rule.id] = {
++            lastSyncHash: newHash,
++            lastSyncTime: new Date().toISOString()
++        };
++        this.saveSyncMeta(meta);
++        this.refresh();
+     }
+ 
+     async removeSkill(skillId: string): Promise<void> {
+@@ -311,13 +580,12 @@ export class LibraryService {
+         }
+     }
+ 
+-    // 鑾峰彇宸ヤ綔鍖虹嫭鏈夌殑 Skills锛堜笉鍦ㄥ簱涓級
+-    getWorkspaceOnlySkills(): SkillItem[] {
++    // 鑾峰彇鏈湴宸ヤ綔鍖虹殑 Skills锛堝寘鍚悓姝ョ姸鎬佸垎鏋愶級
++    getLocalWorkspaceSkills(): SkillItem[] {
+         const workspaceRoot = this.getWorkspaceRoot();
+         if (!workspaceRoot) return [];
+ 
+-        const librarySkillIds = this.skills.map(s => s.id);
+-        const workspaceOnly: SkillItem[] = [];
++        const localSkills: SkillItem[] = [];
+         const skillsDir = path.join(workspaceRoot, '.agent', 'skills');
+ 
+         if (fs.existsSync(skillsDir)) {
+@@ -326,100 +594,153 @@ export class LibraryService {
+                 const entryPath = path.join(skillsDir, entry.name);
+                 const skillMd = path.join(entryPath, 'SKILL.md');
+ 
+-                if (fs.existsSync(skillMd) && !librarySkillIds.includes(entry.name)) {
++                if (fs.existsSync(skillMd)) {
+                     const content = fs.readFileSync(skillMd, 'utf-8');
+                     const parsed = this.parseSkillMd(content, entry.name);
+                     parsed.path = entryPath;
+-                    workspaceOnly.push(parsed);
++
++                    // 鍒嗘瀽鍚屾鐘舵€?+                    const { status, hint } = this.analyzeSkillStatus(entry.name, entryPath);
++                    parsed.status = status;
++                    parsed.syncHint = hint;
++
++                    // 鍙繑鍥為渶瑕佺敤鎴峰叧娉ㄧ殑椤癸紙闈?synced 鐘舵€侊級
++                    if (status !== 'synced') {
++                        localSkills.push(parsed);
++                    }
+                 }
+             }
+         }
+-
+-        return workspaceOnly;
++        return localSkills;
+     }
+ 
+-    // 鑾峰彇宸ヤ綔鍖虹嫭鏈夌殑 Rules锛堜笉鍦ㄥ簱涓級
+-    getWorkspaceOnlyRules(): RuleItem[] {
++    // 鑾峰彇鏈湴宸ヤ綔鍖虹殑 Rules锛堝寘鍚悓姝ョ姸鎬佸垎鏋愶級
++    getLocalWorkspaceRules(): RuleItem[] {
+         const workspaceRoot = this.getWorkspaceRoot();
+         if (!workspaceRoot) return [];
+ 
+-        const libraryRuleIds = this.rules.map(r => r.id);
+-        const workspaceOnly: RuleItem[] = [];
++        const localRules: RuleItem[] = [];
+         const rulesDir = path.join(workspaceRoot, '.agent', 'rules');
+ 
+         if (fs.existsSync(rulesDir)) {
+             const files = fs.readdirSync(rulesDir, { withFileTypes: true });
+             for (const file of files) {
+                 if (file.isFile() && file.name.endsWith('.md')) {
+-                    const ruleId = file.name.replace('.md', '');
+-                    if (!libraryRuleIds.includes(ruleId)) {
+-                        const rulePath = path.join(rulesDir, file.name);
+-                        const content = fs.readFileSync(rulePath, 'utf-8');
+-                        const parsed = this.parseRuleMd(content, file.name);
+-                        parsed.path = rulePath;
+-                        workspaceOnly.push(parsed);
++                    const ruleId = file.name.toLowerCase().replace('.md', '').trim();
++                    const rulePath = path.join(rulesDir, file.name);
++                    const content = fs.readFileSync(rulePath, 'utf-8');
++                    const parsed = this.parseRuleMd(content, file.name);
++                    parsed.path = rulePath;
++
++                    // 鍒嗘瀽鍚屾鐘舵€?+                    const { status, hint } = this.analyzeRuleStatus(ruleId, rulePath);
++                    parsed.status = status;
++                    parsed.syncHint = hint;
++
++                    // 鍙繑鍥為渶瑕佺敤鎴峰叧娉ㄧ殑椤癸紙闈?synced 鐘舵€侊級
++                    if (status !== 'synced') {
++                        localRules.push(parsed);
+                     }
+                 }
+             }
+         }
+-
+-        return workspaceOnly;
++        return localRules;
+     }
+ 
+-    // 鍚屾 Skill 鍒板簱
+-    async syncSkillToLibrary(skill: SkillItem): Promise<void> {
++    // 鍚屾 Skill锛堟敮鎸佸弻鍚戯級
++    async syncSkill(skill: SkillItem, direction: 'up' | 'down'): Promise<void> {
+         const libPath = this.getLibraryPath();
+-        if (!libPath) {
++        const workspaceRoot = this.getWorkspaceRoot();
++
++        if (!libPath || !workspaceRoot) {
+             vscode.window.showErrorMessage('璇峰厛璁剧疆搴撹矾寰?);
+             return;
+         }
+ 
+-        const targetDir = path.join(libPath, '.agent', 'skills');
+-        const targetPath = path.join(targetDir, skill.id);
++        const libSkillPath = path.join(libPath, '.agent', 'skills', skill.id);
++        const localSkillPath = path.join(workspaceRoot, '.agent', 'skills', skill.id);
+ 
+-        if (!fs.existsSync(targetDir)) {
+-            fs.mkdirSync(targetDir, { recursive: true });
+-        }
++        try {
++            if (direction === 'up') {
++                const targetDir = path.join(libPath, '.agent', 'skills');
++                if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
++                if (fs.existsSync(libSkillPath)) fs.rmSync(libSkillPath, { recursive: true, force: true });
++                this.copyDirRecursive(localSkillPath, libSkillPath);
++            } else {
++                const targetDir = path.join(workspaceRoot, '.agent', 'skills');
++                if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
++                if (fs.existsSync(localSkillPath)) fs.rmSync(localSkillPath, { recursive: true, force: true });
++                this.copyDirRecursive(libSkillPath, localSkillPath);
++            }
+ 
+-        // 澶嶅埗鏁翠釜鐩綍
+-        this.copyDirRecursive(skill.path, targetPath);
+-        this.refresh();
++            const meta = this.loadSyncMeta();
++            const newHash = this.computeDirHash(localSkillPath);
++            meta.skills[skill.id] = { lastSyncHash: newHash, lastSyncTime: new Date().toISOString() };
++            this.saveSyncMeta(meta);
++
++            this.refresh();
++        } catch (error) {
++            console.error('[Sync Skill] Error:', error);
++            vscode.window.showErrorMessage(`鍚屾澶辫触: ${error}`);
++        }
+     }
+ 
+-    // 鍚屾 Rule 鍒板簱
+-    async syncRuleToLibrary(rule: RuleItem): Promise<void> {
++    // 鍚屾 Rule锛堟敮鎸佸弻鍚戯級
++    async syncRule(rule: RuleItem, direction: 'up' | 'down'): Promise<void> {
+         const libPath = this.getLibraryPath();
+-        if (!libPath) {
++        const workspaceRoot = this.getWorkspaceRoot();
++
++        if (!libPath || !workspaceRoot) {
+             vscode.window.showErrorMessage('璇峰厛璁剧疆搴撹矾寰?);
+             return;
+         }
+ 
+-        const targetDir = path.join(libPath, '.agent', 'rules');
+-        const targetPath = path.join(targetDir, path.basename(rule.path));
++        const libRulePath = path.join(libPath, '.agent', 'rules', `${rule.id}.md`);
++        const localRulePath = path.join(workspaceRoot, '.agent', 'rules', `${rule.id}.md`);
+ 
+-        if (!fs.existsSync(targetDir)) {
+-            fs.mkdirSync(targetDir, { recursive: true });
++        try {
++            if (direction === 'up') {
++                const targetDir = path.join(libPath, '.agent', 'rules');
++                if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
++                fs.copyFileSync(localRulePath, libRulePath);
++            } else {
++                const targetDir = path.join(workspaceRoot, '.agent', 'rules');
++                if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
++
++                // 鎷夊彇鏃朵篃瑕佺‘淇濇敞鍏?trigger (浠ラ槻搴撻噷娌℃湁)
++                const ruleItem = { ...rule, path: libRulePath };
++                await this.deployRule(ruleItem);
++            }
++
++            const meta = this.loadSyncMeta();
++            const newHash = this.computeFileHash(localRulePath);
++            meta.rules[rule.id] = { lastSyncHash: newHash, lastSyncTime: new Date().toISOString() };
++            this.saveSyncMeta(meta);
++
++            this.refresh();
++        } catch (error) {
++            console.error('[Sync Rule] Error:', error);
++            vscode.window.showErrorMessage(`鍚屾澶辫触: ${error}`);
+         }
++    }
+ 
+-        fs.copyFileSync(rule.path, targetPath);
+-        this.refresh();
++    // 淇濈暀鏃ф柟娉曚互淇濇寔鍚戝悗鍏煎
++    async syncSkillToLibrary(skill: SkillItem): Promise<void> {
++        return this.syncSkill(skill, 'up');
+     }
+ 
+-    private copyDirRecursive(src: string, dest: string): void {
+-        if (!fs.existsSync(dest)) {
+-            fs.mkdirSync(dest, { recursive: true });
+-        }
++    async syncRuleToLibrary(rule: RuleItem): Promise<void> {
++        return this.syncRule(rule, 'up');
++    }
+ 
++    private copyDirRecursive(src: string, dest: string): void {
++        if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true });
+         const entries = fs.readdirSync(src, { withFileTypes: true });
+         for (const entry of entries) {
+             const srcPath = path.join(src, entry.name);
+             const destPath = path.join(dest, entry.name);
+-
+-            if (entry.isDirectory()) {
+-                this.copyDirRecursive(srcPath, destPath);
+-            } else {
+-                fs.copyFileSync(srcPath, destPath);
+-            }
++            if (entry.isDirectory()) this.copyDirRecursive(srcPath, destPath);
++            else fs.copyFileSync(srcPath, destPath);
+         }
+     }
+ }
+diff --git a/src/webview/LibraryPanel.ts b/src/webview/LibraryPanel.ts
+index 4943489..19dd723 100644
+--- a/src/webview/LibraryPanel.ts
++++ b/src/webview/LibraryPanel.ts
+@@ -43,6 +43,12 @@ export class LibraryPanel {
+ 
+         this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
+ 
++        // 鐩戝惉 LibraryService 鐨勫彉鏇翠簨浠?+        libraryService.onDidChange(() => {
++            console.log('[LibraryPanel] Detected library service change, updating UI...');
++            this._update(libraryService);
++        }, null, this._disposables);
++
+         this._panel.webview.onDidReceiveMessage(
+             async (message) => {
+                 switch (message.command) {
+@@ -91,20 +97,24 @@ export class LibraryPanel {
+                         vscode.env.openExternal(vscode.Uri.parse('https://github.com/sponsors/浣犵殑鐢ㄦ埛鍚?));
+                         break;
+                     case 'syncSkill':
+-                        const wsSkills = libraryService.getWorkspaceOnlySkills();
++                        const wsSkills = libraryService.getLocalWorkspaceSkills();
+                         const wsSkill = wsSkills.find(s => s.id === message.id);
+                         if (wsSkill) {
+-                            await libraryService.syncSkillToLibrary(wsSkill);
+-                            vscode.window.showInformationMessage(`馃摜 宸插悓姝ュ埌搴? ${wsSkill.name}`);
++                            const direction = message.direction || 'up';
++                            await libraryService.syncSkill(wsSkill, direction);
++                            const actionText = direction === 'up' ? '鍚屾鍒板簱' : '浠庡簱鎷夊彇';
++                            vscode.window.showInformationMessage(`馃摜 宸?{actionText}: ${wsSkill.name}`);
+                             this._update(libraryService);
+                         }
+                         break;
+                     case 'syncRule':
+-                        const wsRules = libraryService.getWorkspaceOnlyRules();
++                        const wsRules = libraryService.getLocalWorkspaceRules();
+                         const wsRule = wsRules.find(r => r.id === message.id);
+                         if (wsRule) {
+-                            await libraryService.syncRuleToLibrary(wsRule);
+-                            vscode.window.showInformationMessage(`馃摜 宸插悓姝ュ埌搴? ${wsRule.name}`);
++                            const direction = message.direction || 'up';
++                            await libraryService.syncRule(wsRule, direction);
++                            const actionText = direction === 'up' ? '鍚屾鍒板簱' : '浠庡簱鎷夊彇';
++                            vscode.window.showInformationMessage(`馃摜 宸?{actionText}: ${wsRule.name}`);
+                             this._update(libraryService);
+                         }
+                         break;
+@@ -120,8 +130,8 @@ export class LibraryPanel {
+         const allRules = await libraryService.getRules();
+         const deployedSkills = libraryService.getDeployedSkills();
+         const deployedRules = libraryService.getDeployedRules();
+-        const workspaceOnlySkills = libraryService.getWorkspaceOnlySkills();
+-        const workspaceOnlyRules = libraryService.getWorkspaceOnlyRules();
++        const localWorkspaceSkills = libraryService.getLocalWorkspaceSkills();
++        const localWorkspaceRules = libraryService.getLocalWorkspaceRules();
+         const libPath = libraryService.getLibraryPath();
+ 
+         this._panel.webview.html = this._getHtmlForWebview(
+@@ -129,8 +139,8 @@ export class LibraryPanel {
+             allRules,
+             deployedSkills.map(s => s.id),
+             deployedRules.map(r => r.id),
+-            workspaceOnlySkills,
+-            workspaceOnlyRules,
++            localWorkspaceSkills,
++            localWorkspaceRules,
+             libPath
+         );
+     }
+@@ -162,6 +172,7 @@ export class LibraryPanel {
+             --accent-hover: #79c0ff;
+             --success: #3fb950;
+             --warning: #d29922;
++            --danger: #f85149;
+             --gradient-start: #667eea;
+             --gradient-end: #764ba2;
+         }
+@@ -369,29 +380,45 @@ export class LibraryPanel {
+         }
+ 
+         .btn-danger:hover {
+-            background: #f85149;
+-            border-color: #f85149;
++            background: var(--danger);
++            border-color: var(--danger);
+             color: white;
+         }
+ 
+         .btn-sync {
+-            background: linear-gradient(135deg, #58a6ff, #3fb950);
+-            color: white;
+-            border: none;
+             padding: 8px 14px;
+             border-radius: 6px;
+             cursor: pointer;
+             font-size: 12px;
+             transition: all 0.2s;
++            border: none;
++            color: white;
+         }
+ 
+-        .btn-sync:hover {
++        .btn-sync-up {
++            background: linear-gradient(135deg, #58a6ff, #3fb950);
++        }
++
++        .btn-sync-up:hover {
+             transform: scale(1.02);
+             box-shadow: 0 4px 12px rgba(88, 166, 255, 0.4);
+         }
+ 
++        .btn-sync-down {
++            background: linear-gradient(135deg, #d29922, #ea4aaa);
++        }
++
++        .btn-sync-down:hover {
++            transform: scale(1.02);
++            box-shadow: 0 4px 12px rgba(210, 153, 34, 0.4);
++        }
++
++        .btn-sync-conflict {
++            background: var(--danger);
++        }
++
+         .workspace-only {
+-            border-color: #d29922;
++            border-color: var(--warning);
+         }
+ 
+         .collapsible .section-header {
+@@ -505,7 +532,7 @@ export class LibraryPanel {
+                 馃搨 搴撹矾寰? ${libPath ? `<code>${libPath}</code>` : '<span style="color: var(--warning)">鏈缃?/span>'}
+             </div>
+             <div class="toolbar-actions">
+-                <button onclick="refresh()">馃攧 鍒锋柊</button>
++                <button onclick="refresh()">馃攧 鍒锋柊鏁版嵁</button>
+                 <button onclick="setLibraryPath()">馃搧 璁剧疆璺緞</button>
+             </div>
+         </div>
+@@ -574,34 +601,90 @@ export class LibraryPanel {
+         ${(workspaceOnlySkills.length > 0 || workspaceOnlyRules.length > 0) ? `
+         <div class="section collapsible workspace-only">
+             <div class="section-header" onclick="toggleSection(this)">
+-                <span class="section-title">馃攧 宸ヤ綔鍖虹嫭鏈?<span class="badge" style="background:#d29922">${workspaceOnlySkills.length + workspaceOnlyRules.length}</span></span>
++                <span class="section-title">馃攧 鏈湴宸ヤ綔鍖哄姣?<span class="badge" style="background:#d29922">${workspaceOnlySkills.length + workspaceOnlyRules.length}</span></span>
+                 <span class="toggle-icon">鈻?/span>
+             </div>
+             <div class="item-list">
+-                ${workspaceOnlySkills.map(s => `
++                ${workspaceOnlySkills.map(s => {
++                        const isNew = s.status === 'new';
++                        const isConflict = s.status === 'conflict';
++                        const isRemoteAhead = s.status === 'remote_ahead';
++                        const isLocalAhead = s.status === 'local_ahead';
++
++                        let descText = s.syncHint || '鏈悓姝?;
++                        let descClass = '';
++                        if (isConflict) {
++                            descText = '鈿狅笍 鍐茬獊锛氬弻杈瑰潎鏈変慨鏀?;
++                            descClass = 'text-warning';
++                        } else if (isRemoteAhead) {
++                            descText = '浠撳簱鍐呭姣旀湰鍦版洿鏂?;
++                        } else if (isLocalAhead) {
++                            descText = '鏈湴宸蹭慨鏀癸紝寤鸿涓婁紶';
++                        }
++
++                        const renderButtons = () => {
++                            if (isNew) {
++                                return `<button class="btn-sync btn-sync-up" onclick="syncSkill('${s.id}', 'up')">鈫?涓婁紶鍒板簱</button>`;
++                            }
++                            return `
++                            <button class="btn-sync btn-sync-up" onclick="syncSkill('${s.id}', 'up')">鈫?涓婁紶鍒板簱</button>
++                            <button class="btn-sync btn-sync-down" onclick="syncSkill('${s.id}', 'down')">鈫?浠庡簱鎷夊彇</button>
++                        `;
++                        };
++
++                        return `
+                     <div class="item">
+                         <div class="item-info">
+                             <div class="item-name">馃摝 ${s.name}</div>
+-                            <div class="item-desc">${s.description || '宸ヤ綔鍖虹嫭鏈?Skill'}</div>
++                            <div class="item-desc ${descClass}">${descText}</div>
+                         </div>
+                         <div class="item-actions">
+-                            <button class="btn-sync" onclick="syncSkill('${s.id}')">馃摜 鍚屾鍒板簱</button>
++                            ${renderButtons()}
+                             <button class="btn-danger" onclick="removeSkill('${s.id}')">馃棏锔?/button>
+                         </div>
+                     </div>
+-                `).join('')}
+-                ${workspaceOnlyRules.map(r => `
++                    `;
++                    }).join('')}
++                ${workspaceOnlyRules.map(r => {
++                        const isNew = r.status === 'new';
++                        const isConflict = r.status === 'conflict';
++                        const isRemoteAhead = r.status === 'remote_ahead';
++                        const isLocalAhead = r.status === 'local_ahead';
++
++                        let descText = r.syncHint || '鏈悓姝?;
++                        let descClass = '';
++                        if (isConflict) {
++                            descText = '鈿狅笍 鍐茬獊锛氬弻杈瑰潎鏈変慨鏀?;
++                            descClass = 'text-warning';
++                        } else if (isRemoteAhead) {
++                            descText = '浠撳簱鍐呭姣旀湰鍦版洿鏂?;
++                        } else if (isLocalAhead) {
++                            descText = '鏈湴宸蹭慨鏀癸紝寤鸿涓婁紶';
++                        }
++
++                        const renderButtons = () => {
++                            if (isNew) {
++                                return `<button class="btn-sync btn-sync-up" onclick="syncRule('${r.id}', 'up')">鈫?涓婁紶鍒板簱</button>`;
++                            }
++                            return `
++                            <button class="btn-sync btn-sync-up" onclick="syncRule('${r.id}', 'up')">鈫?涓婁紶鍒板簱</button>
++                            <button class="btn-sync btn-sync-down" onclick="syncRule('${r.id}', 'down')">鈫?浠庡簱鎷夊彇</button>
++                        `;
++                        };
++
++                        return `
+                     <div class="item">
+                         <div class="item-info">
+                             <div class="item-name">馃摐 ${r.name}</div>
+-                            <div class="item-desc">${r.description || '宸ヤ綔鍖虹嫭鏈?Rule'}</div>
++                            <div class="item-desc ${descClass}">${descText}</div>
+                         </div>
+                         <div class="item-actions">
+-                            <button class="btn-sync" onclick="syncRule('${r.id}')">馃摜 鍚屾鍒板簱</button>
++                            ${renderButtons()}
+                             <button class="btn-danger" onclick="removeRule('${r.id}')">馃棏锔?/button>
+                         </div>
+                     </div>
+-                `).join('')}
++                    `;
++                    }).join('')}
+             </div>
+         </div>
+         ` : ''}
+@@ -653,12 +736,12 @@ export class LibraryPanel {
+             vscode.postMessage({ command: 'removeRule', id });
+         }
+ 
+-        function syncSkill(id) {
+-            vscode.postMessage({ command: 'syncSkill', id });
++        function syncSkill(id, direction) {
++            vscode.postMessage({ command: 'syncSkill', id, direction });
+         }
+ 
+-        function syncRule(id) {
+-            vscode.postMessage({ command: 'syncRule', id });
++        function syncRule(id, direction) {
++            vscode.postMessage({ command: 'syncRule', id, direction });
+         }
+ 
+         function toggleSection(header) {
+
